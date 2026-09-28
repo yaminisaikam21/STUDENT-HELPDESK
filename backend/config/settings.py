@@ -5,13 +5,27 @@ Django settings for Student HelpDesk project.
 from pathlib import Path
 import os
 
+from dotenv import load_dotenv
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-shd-campus-helpdesk-key-2026-teal-gold')
+load_dotenv(BASE_DIR / '.env')
+
+
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-shd-campus-helpdesk-key-2026-teal-gold'
+)
 
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+
+# ---------------------------------------------------------
+# Applications
+# ---------------------------------------------------------
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -34,6 +48,11 @@ INSTALLED_APPS = [
     'dashboard.apps.DashboardConfig',
 ]
 
+
+# ---------------------------------------------------------
+# Middleware
+# ---------------------------------------------------------
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -45,7 +64,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'config.urls'
+
+
+# ---------------------------------------------------------
+# Templates
+# ---------------------------------------------------------
 
 TEMPLATES = [
     {
@@ -63,8 +88,15 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'config.wsgi.application'
+
 ASGI_APPLICATION = 'config.asgi.application'
+
+
+# ---------------------------------------------------------
+# Database
+# ---------------------------------------------------------
 
 DATABASES = {
     'default': {
@@ -73,47 +105,123 @@ DATABASES = {
     }
 }
 
+
+# ---------------------------------------------------------
+# Custom User Model
+# ---------------------------------------------------------
+
 AUTH_USER_MODEL = 'accounts.User'
+
+
+# ---------------------------------------------------------
+# Password Validation
+# ---------------------------------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {'min_length': 6}
+        'OPTIONS': {
+            'min_length': 6
+        }
     },
 ]
 
+
+# ---------------------------------------------------------
+# Internationalization
+# ---------------------------------------------------------
+
 LANGUAGE_CODE = 'en-us'
+
 TIME_ZONE = 'UTC'
+
 USE_I18N = True
+
 USE_TZ = True
 
+
+# ---------------------------------------------------------
+# Static and Media Files
+# ---------------------------------------------------------
+
 STATIC_URL = 'static/'
+
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
+
 MEDIA_ROOT = BASE_DIR / 'media'
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Django REST Framework configuration
+
+# ---------------------------------------------------------
+# Django REST Framework
+# ---------------------------------------------------------
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
+
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+
     'PAGE_SIZE': 50,
 }
 
-# CORS configuration
+
+# ---------------------------------------------------------
+# CORS Configuration
+# ---------------------------------------------------------
+
 CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'http://localhost:3000',
     'http://127.0.0.1:3000',
 ]
+
+
+# ---------------------------------------------------------
+# Frontend URL
+# Used for password reset links
+# ---------------------------------------------------------
+
+FRONTEND_URL = os.environ.get(
+    'FRONTEND_URL',
+    'http://localhost:5173'
+)
+
+
+# ---------------------------------------------------------
+# Gmail SMTP Email Configuration
+# ---------------------------------------------------------
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+
+EMAIL_USE_SSL = False
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+DEFAULT_FROM_EMAIL = os.environ.get(
+    'DEFAULT_FROM_EMAIL',
+    EMAIL_HOST_USER
+)

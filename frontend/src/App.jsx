@@ -1,5 +1,11 @@
 import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  Routes,
+} from 'react-router-dom';
+
+import { useAuth } from './context/AuthContext';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
@@ -36,22 +42,76 @@ import AdminStudents from './pages/admin/Students';
 import Reports from './pages/admin/Reports';
 import Broadcast from './pages/admin/Broadcast';
 
+import ResetPassword from './pages/ResetPassword';
 
-function ProtectedLayout({ children, allowedRoles }) {
+/*
+ * Protected pages
+ */
+function ProtectedLayout({
+  children,
+  allowedRoles,
+}) {
   return (
-    <ProtectedRoute allowedRoles={allowedRoles}>
-      <Layout>{children}</Layout>
+    <ProtectedRoute
+      allowedRoles={allowedRoles}
+    >
+      <Layout>
+        {children}
+      </Layout>
     </ProtectedRoute>
   );
 }
 
 
+/*
+ * Pages that are only for logged-out users.
+ *
+ * If the user is already logged in and manually
+ * opens /login or /register, send them home.
+ */
+function PublicOnlyRoute({ children }) {
+
+  const {
+    isAuthenticated,
+    loading,
+  } = useAuth();
+
+  /*
+   * Wait until AuthContext checks localStorage
+   * and verifies the session.
+   */
+  if (loading) {
+    return null;
+  }
+
+  /*
+   * Already logged in:
+   * /login    -> /
+   * /register -> /
+   */
+  if (isAuthenticated) {
+    return (
+      <Navigate
+        to="/"
+        replace
+      />
+    );
+  }
+
+  return children;
+}
+
+
 export default function App() {
+
   return (
     <Routes>
 
-      {/* ==================== PUBLIC ==================== */}
+      {/* =====================================================
+          PUBLIC
+          ===================================================== */}
 
+      {/* LANDING PAGE */}
       <Route
         path="/"
         element={
@@ -61,98 +121,151 @@ export default function App() {
         }
       />
 
+
+      {/* LOGIN */}
       <Route
         path="/login"
-        element={<Login />}
+        element={
+          <PublicOnlyRoute>
+            <Login />
+          </PublicOnlyRoute>
+        }
+      />
+
+
+      {/* REGISTER */}
+      <Route
+        path="/register"
+        element={
+          <PublicOnlyRoute>
+            <Register />
+          </PublicOnlyRoute>
+        }
+      />
+
+
+      {/* FORGOT PASSWORD */}
+      <Route
+        path="/forgot-password"
+        element={
+          <ForgotPassword />
+        }
       />
 
       <Route
-        path="/register"
-        element={<Register />}
+        path="/reset-password/:uid/:token"
+        element={<ResetPassword />}
       />
 
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-
-
-      {/* ==================== STUDENT ==================== */}
+      {/* =====================================================
+          STUDENT
+          ===================================================== */}
 
       <Route
         path="/student"
         element={
-          <ProtectedLayout allowedRoles={['STUDENT']}>
+          <ProtectedLayout
+            allowedRoles={['STUDENT']}
+          >
             <StudentHome />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/complaints"
         element={
-          <ProtectedLayout allowedRoles={['STUDENT']}>
+          <ProtectedLayout
+            allowedRoles={['STUDENT']}
+          >
             <Complaints />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/complaints/create"
         element={
-          <ProtectedLayout allowedRoles={['STUDENT']}>
+          <ProtectedLayout
+            allowedRoles={['STUDENT']}
+          >
             <CreateComplaint />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/complaints/:id"
         element={
-          <ProtectedLayout allowedRoles={['STUDENT']}>
+          <ProtectedLayout
+            allowedRoles={['STUDENT']}
+          >
             <ComplaintDetails />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/outpasses"
         element={
-          <ProtectedLayout allowedRoles={['STUDENT']}>
+          <ProtectedLayout
+            allowedRoles={['STUDENT']}
+          >
             <Outpasses />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/outpasses/create"
         element={
-          <ProtectedLayout allowedRoles={['STUDENT']}>
+          <ProtectedLayout
+            allowedRoles={['STUDENT']}
+          >
             <CreateOutpass />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/outpasses/:id"
         element={
-          <ProtectedLayout allowedRoles={['STUDENT']}>
+          <ProtectedLayout
+            allowedRoles={['STUDENT']}
+          >
             <OutpassDetails />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/profile"
         element={
-          <ProtectedLayout allowedRoles={['STUDENT']}>
+          <ProtectedLayout
+            allowedRoles={['STUDENT']}
+          >
             <Profile />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/settings"
         element={
           <ProtectedLayout
-            allowedRoles={['STUDENT', 'WARDEN', 'ADMIN']}
+            allowedRoles={[
+              'STUDENT',
+              'WARDEN',
+              'ADMIN',
+            ]}
           >
             <Settings />
           </ProtectedLayout>
@@ -160,25 +273,35 @@ export default function App() {
       />
 
 
-      {/* ==================== NOTIFICATIONS ==================== */}
-
+      {/* =====================================================
+          NOTIFICATIONS
+          ===================================================== */}
 
       <Route
         path="/notifications/details"
         element={
           <ProtectedLayout
-            allowedRoles={['STUDENT', 'WARDEN', 'ADMIN']}
+            allowedRoles={[
+              'STUDENT',
+              'WARDEN',
+              'ADMIN',
+            ]}
           >
             <NotificationDetails />
           </ProtectedLayout>
         }
       />
+
 
       <Route
         path="/notifications/:id"
         element={
           <ProtectedLayout
-            allowedRoles={['STUDENT', 'WARDEN', 'ADMIN']}
+            allowedRoles={[
+              'STUDENT',
+              'WARDEN',
+              'ADMIN',
+            ]}
           >
             <NotificationDetails />
           </ProtectedLayout>
@@ -186,126 +309,170 @@ export default function App() {
       />
 
 
-      {/* ==================== WARDEN ==================== */}
+      {/* =====================================================
+          WARDEN
+          ===================================================== */}
 
       <Route
         path="/warden"
         element={
-          <ProtectedLayout allowedRoles={['WARDEN']}>
+          <ProtectedLayout
+            allowedRoles={['WARDEN']}
+          >
             <WardenHome />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/warden/outpasses"
         element={
-          <ProtectedLayout allowedRoles={['WARDEN']}>
+          <ProtectedLayout
+            allowedRoles={['WARDEN']}
+          >
             <OutpassRequests />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/warden/outpasses/:id"
         element={
-          <ProtectedLayout allowedRoles={['WARDEN']}>
+          <ProtectedLayout
+            allowedRoles={['WARDEN']}
+          >
             <OutpassReview />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/warden/students"
         element={
-          <ProtectedLayout allowedRoles={['WARDEN']}>
+          <ProtectedLayout
+            allowedRoles={['WARDEN']}
+          >
             <WardenStudents />
           </ProtectedLayout>
         }
       />
 
 
-      {/* ==================== ADMIN ==================== */}
+      {/* =====================================================
+          ADMIN
+          ===================================================== */}
 
       <Route
         path="/admin"
         element={
-          <ProtectedLayout allowedRoles={['ADMIN']}>
+          <ProtectedLayout
+            allowedRoles={['ADMIN']}
+          >
             <AdminHome />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/admin/complaints"
         element={
-          <ProtectedLayout allowedRoles={['ADMIN']}>
+          <ProtectedLayout
+            allowedRoles={['ADMIN']}
+          >
             <AdminComplaints />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/admin/complaints/:id"
         element={
-          <ProtectedLayout allowedRoles={['ADMIN']}>
+          <ProtectedLayout
+            allowedRoles={['ADMIN']}
+          >
             <AdminComplaintDetails />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/admin/outpasses"
         element={
-          <ProtectedLayout allowedRoles={['ADMIN']}>
+          <ProtectedLayout
+            allowedRoles={['ADMIN']}
+          >
             <AdminOutpasses />
           </ProtectedLayout>
         }
       />
 
-      {/* Admin can view the same full outpass details page */}
+
       <Route
         path="/admin/outpasses/:id"
         element={
-          <ProtectedLayout allowedRoles={['ADMIN']}>
+          <ProtectedLayout
+            allowedRoles={['ADMIN']}
+          >
             <OutpassDetails />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/admin/students"
         element={
-          <ProtectedLayout allowedRoles={['ADMIN']}>
+          <ProtectedLayout
+            allowedRoles={['ADMIN']}
+          >
             <AdminStudents />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/admin/reports"
         element={
-          <ProtectedLayout allowedRoles={['ADMIN']}>
+          <ProtectedLayout
+            allowedRoles={['ADMIN']}
+          >
             <Reports />
           </ProtectedLayout>
         }
       />
 
+
       <Route
         path="/admin/broadcast"
         element={
-          <ProtectedLayout allowedRoles={['ADMIN']}>
+          <ProtectedLayout
+            allowedRoles={['ADMIN']}
+          >
             <Broadcast />
           </ProtectedLayout>
         }
       />
 
 
-      {/* ==================== UNKNOWN ROUTE ==================== */}
+      {/* =====================================================
+          UNKNOWN ROUTE
+          ===================================================== */}
 
       <Route
         path="*"
-        element={<Navigate to="/" replace />}
+        element={
+          <Navigate
+            to="/"
+            replace
+          />
+        }
       />
 
     </Routes>

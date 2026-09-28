@@ -13,6 +13,11 @@ from .serializers import (
     ChangePasswordSerializer
 )
 from .permissions import IsAdminUserRole, IsWarden
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.conf import settings
 
 class RegisterView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -91,6 +96,131 @@ class ChangePasswordView(APIView):
             return Response({'message': 'Password changed successfully.'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ForgotPasswordView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email', '').strip()
+
+        if not email:
+            return Response(
+                {'email': ['Email is required.']},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        user = User.objects.filter(
+            email__iexact=email,
+            is_active=True
+        ).first()
+
+        # Do not reveal whether an account exists.
+        if user:
+            uid = urlsafe_base64_encode(
+                force_bytes(user.pk)
+            )
+
+            token = default_token_generator.make_token(user)
+
+            reset_link = (
+                f"{settings.FRONTEND_URL}"
+                f"/reset-password/{uid}/{token}"
+            )
+
+            message = f"""
+Hello {user.first_name or user.username},
+
+We received a request to reset your Student HelpDesk password.
+
+Click the link below to create a new password:
+
+{reset_link}
+
+This link is valid until the password is changed.
+
+If you did not request this password reset, you can safely ignore this email.
+
+Regards,
+Student HelpDesk
+"""
+
+            send_mail(
+                subject='Student HelpDesk - Password Reset',
+                message=message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+
+        return Response(
+            {
+                'message': 'If an account exists with this email, a password reset link has been sent.'
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+class ResetPasswordView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        uid = request.data.get('uid')
+        token = request.data.get('token')
+        new_password = request.data.get('new_password')
+        confirm_password = request.data.get('confirm_password')
+
+        if not uid or not token:
+            return Response(
+                {'detail': 'Invalid password reset link.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not new_password or not confirm_password:
+            return Response(
+                {'detail': 'Both password fields are required.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if new_password != confirm_password:
+            return Response(
+                {'confirm_password': ['Passwords do not match.']},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if len(new_password) < 6:
+            return Response(
+                {'new_password': ['Password must be at least 6 characters.']},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user_id = force_str(
+                urlsafe_base64_decode(uid)
+            )
+
+            user = User.objects.get(
+                pk=user_id,
+                is_active=True
+            )
+
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            return Response(
+                {'detail': 'Invalid password reset link.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not default_token_generator.check_token(user, token):
+            return Response(
+                {'detail': 'This password reset link is invalid or has expired.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        user.set_password(new_password)
+        user.save()
+
+        return Response(
+            {'message': 'Password reset successfully. You can now sign in.'},
+            status=status.HTTP_200_OK
+        )
 
 class StudentListView(APIView):
     permission_classes = [permissions.IsAuthenticated, IsWarden]
