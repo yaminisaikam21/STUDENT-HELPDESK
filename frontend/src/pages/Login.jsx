@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+
 import { motion } from 'framer-motion';
+
 import {
   LogIn,
   Lock,
@@ -10,19 +13,26 @@ import {
 } from 'lucide-react';
 
 import { useAuth } from '../context/AuthContext';
+
 import { useToast } from '../context/ToastContext';
+
 import BrandLogo from '../components/BrandLogo';
 
 export default function Login() {
   const [username, setUsername] = useState('');
+
   const [password, setPassword] = useState('');
+
   const [error, setError] = useState('');
+
   const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();
+
   const { addToast } = useToast();
 
   const navigate = useNavigate();
+
   const location = useLocation();
 
   const handleSubmit = async (e) => {
@@ -35,6 +45,7 @@ export default function Login() {
 
     try {
       setLoading(true);
+
       setError('');
 
       /*
@@ -43,6 +54,7 @@ export default function Login() {
        * and returns the authenticated user's information,
        * including their role.
        */
+
       const data = await login({
         username: username.trim(),
         password,
@@ -59,6 +71,7 @@ export default function Login() {
        * If the user originally tried to access a protected page,
        * send them back there after successful login.
        */
+
       const from = location.state?.from?.pathname;
 
       if (from) {
@@ -73,6 +86,7 @@ export default function Login() {
        * These roles come from Django.
        * They are NOT assigned by this login page.
        */
+
       if (user.role === 'STUDENT') {
         navigate('/student', { replace: true });
       } else if (user.role === 'WARDEN') {
@@ -82,7 +96,6 @@ export default function Login() {
       } else {
         navigate('/', { replace: true });
       }
-
     } catch (err) {
       const message =
         err.response?.data?.non_field_errors?.[0] ||
@@ -91,6 +104,7 @@ export default function Login() {
         'Invalid username or password.';
 
       setError(message);
+
       addToast(message, 'error');
     } finally {
       setLoading(false);
@@ -98,39 +112,46 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[#2B211B]">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-brand-cream">
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         className="max-w-md w-full"
       >
-
         {/* Logo and heading */}
-        <div className="mb-5 flex justify-start"><Link to="/" className="inline-flex items-center gap-2 rounded-xl border border-[#6B4A35] bg-white/5 px-3 py-2 text-xs font-semibold text-[#E7D8C5] hover:bg-white/10 transition-colors">← Back to home</Link></div>
+
+        <div className="mb-5 flex justify-start">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 rounded-xl border border-[#6B4A35] bg-transparent px-3 py-2 text-xs font-semibold text-[#6B4A35] hover:bg-[#6B4A35]/10 transition-colors"
+          >
+            ← Back to home
+          </Link>
+        </div>
 
         <div className="text-center space-y-3 mb-8">
-
           <div className="flex justify-center">
             <BrandLogo linkTo="/" />
           </div>
 
-          <h1 className="font-heading text-3xl font-bold text-[#F7F1E8]">
+          <h1 className="font-heading text-3xl font-bold text-[#6B4A35]">
             Welcome Back
           </h1>
 
-          <p className="text-sm text-[#B89B7A]">
+          <p className="text-sm text-[#8B684D]">
             Sign in to access your campus account
           </p>
         </div>
 
         {/* Login card */}
+
         <form
           onSubmit={handleSubmit}
           className="p-8 rounded-3xl bg-[#3A2A20] border border-[#6B4A35] shadow-2xl space-y-5"
         >
-
           {/* Security message */}
+
           <div className="flex items-start gap-3 p-4 rounded-2xl bg-[#33251D] border border-[#6B4A35]">
             <ShieldCheck className="w-5 h-5 text-[#8B684D] shrink-0 mt-0.5" />
 
@@ -146,6 +167,7 @@ export default function Login() {
           </div>
 
           {/* Error */}
+
           {error && (
             <div className="p-3.5 rounded-xl bg-rose-950/40 border border-rose-800/60 text-rose-300 text-xs flex items-start gap-2.5">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-400" />
@@ -155,6 +177,7 @@ export default function Login() {
           )}
 
           {/* Username */}
+
           <div className="space-y-1.5">
             <label
               htmlFor="username"
@@ -186,6 +209,7 @@ export default function Login() {
           </div>
 
           {/* Password */}
+
           <div className="space-y-1.5">
             <label
               htmlFor="password"
@@ -217,6 +241,7 @@ export default function Login() {
           </div>
 
           {/* Login button */}
+
           <button
             type="submit"
             disabled={loading}
@@ -225,22 +250,37 @@ export default function Login() {
             {loading ? (
               <>
                 <div className="w-4 h-4 border-2 border-[#2B211B] border-t-transparent rounded-full animate-spin" />
+
                 <span>Signing In...</span>
               </>
             ) : (
               <>
                 <LogIn className="w-4 h-4" />
+
                 <span>Sign In</span>
               </>
             )}
           </button>
 
           {/* Register */}
-          <div className="flex items-center justify-between pt-1"><Link to="/forgot-password" className="text-xs font-semibold text-[#C9A66B] hover:underline">Forgot password?</Link><span className="text-xs text-[#B89B7A]">Secure sign in</span></div>
+
+          <div className="flex items-center justify-between pt-1">
+            <Link
+              to="/forgot-password"
+              className="text-xs font-semibold text-[#C9A66B] hover:underline"
+            >
+              Forgot password?
+            </Link>
+
+            <span className="text-xs text-[#B89B7A]">
+              Secure sign in
+            </span>
+          </div>
 
           <div className="text-center pt-2">
             <span className="text-xs text-[#B89B7A]">
               Don't have an account?{' '}
+
               <Link
                 to="/register"
                 className="font-semibold text-[#C9A66B] hover:underline"
@@ -249,7 +289,6 @@ export default function Login() {
               </Link>
             </span>
           </div>
-
         </form>
       </motion.div>
     </div>
