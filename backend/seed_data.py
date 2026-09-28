@@ -53,10 +53,10 @@ def run():
     print("Warden user created: warden_kumar / warden123")
 
     # 3. Student 1: Harshitha
-    s1, _ = User.objects.get_or_create(username='harshitha', defaults={
+    s1, _ = User.objects.get_or_create(username='student', defaults={
         'email': 'harshitha@student.campus.edu',
-        'first_name': 'Harshitha',
-        'last_name': 'Rao',
+        'first_name': 'student',
+        'last_name': '',
         'role': 'STUDENT',
         'phone': '+91 98765 43210',
     })
