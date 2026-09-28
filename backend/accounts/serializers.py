@@ -114,8 +114,8 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
             profile, _ = StudentProfile.objects.get_or_create(user=instance)
             for attr, value in profile_data.items():
                 setattr(profile, attr, value)
-            if 'phone' in validated_data and not profile.phone:
+            if 'phone' in validated_data:
                 profile.phone = validated_data['phone']
-            profile.save()
+                profile.save()
 
         return instance

@@ -6,13 +6,27 @@ export const notificationService = {
     return response.data;
   },
 
+  getNotification: async (id) => {
+    const response = await api.get(
+      `/api/notifications/${id}/`
+    );
+
+    return response.data;
+  },
+
   markAsRead: async (id) => {
-    const response = await api.post(`/api/notifications/${id}/read/`);
+    const response = await api.post(
+      `/api/notifications/${id}/read/`
+    );
+
     return response.data;
   },
 
   markAllAsRead: async () => {
-    const response = await api.post('/api/notifications/read-all/');
+    const response = await api.post(
+      '/api/notifications/read-all/'
+    );
+
     return response.data;
   },
 
@@ -21,6 +35,7 @@ export const notificationService = {
       '/api/notifications/broadcast/',
       broadcastData
     );
+
     return response.data;
   },
 
@@ -28,6 +43,24 @@ export const notificationService = {
     const response = await api.delete(
       `/api/notifications/${id}/delete/`
     );
+
+    return response.data;
+  },
+
+  getPreferences: async () => {
+    const response = await api.get(
+      '/api/notifications/preferences/'
+    );
+
+    return response.data;
+  },
+
+  updatePreferences: async (preferences) => {
+    const response = await api.put(
+      '/api/notifications/preferences/',
+      preferences
+    );
+
     return response.data;
   },
 };

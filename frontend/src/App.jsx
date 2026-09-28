@@ -278,7 +278,7 @@ export default function App() {
           ===================================================== */}
 
       <Route
-        path="/notifications/details"
+        path="/notifications/:id"
         element={
           <ProtectedLayout
             allowedRoles={[

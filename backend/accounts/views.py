@@ -217,6 +217,11 @@ class ResetPasswordView(APIView):
         user.set_password(new_password)
         user.save()
 
+        # Revoke existing authentication tokens
+        from rest_framework.authtoken.models import Token
+
+        Token.objects.filter(user=user).delete()
+
         return Response(
             {'message': 'Password reset successfully. You can now sign in.'},
             status=status.HTTP_200_OK

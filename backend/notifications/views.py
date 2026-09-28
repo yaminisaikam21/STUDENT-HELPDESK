@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
-from .models import Notification
 from .serializers import NotificationSerializer, BroadcastNotificationSerializer
 from accounts.permissions import IsAdminUserRole
+from .models import Notification, NotificationPreference
+from .utils import create_notification
 
 User = get_user_model()
 
@@ -33,6 +34,19 @@ class NotificationListView(APIView):
             'notifications': serializer.data
         })
 
+class NotificationDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        notification = get_object_or_404(
+            Notification,
+            pk=pk,
+            recipient=request.user
+        )
+
+        serializer = NotificationSerializer(notification)
+
+        return Response(serializer.data)
 
 class MarkNotificationReadView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -112,24 +126,25 @@ class BroadcastNotificationView(APIView):
             elif target_role == 'WARDEN':
                 users = users.filter(role='WARDEN')
 
-            notifications = [
-                Notification(
+            sent_count = 0
+
+            for user in users:
+                notification = create_notification(
                     recipient=user,
                     title=title,
                     message=message,
                     notification_type='BROADCAST',
                     reference_url='/notifications'
                 )
-                for user in users
-            ]
 
-            Notification.objects.bulk_create(notifications)
+                if notification:
+                    sent_count += 1
 
             return Response(
                 {
                     'message': (
                         f'Broadcast sent successfully to '
-                        f'{len(notifications)} users.'
+                        f'{sent_count} users.'
                     )
                 },
                 status=status.HTTP_201_CREATED
@@ -139,3 +154,59 @@ class BroadcastNotificationView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+
+
+class NotificationPreferencesView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        preferences, _ = NotificationPreference.objects.get_or_create(
+            user=request.user
+        )
+
+        return Response({
+            'complaints': preferences.complaint_updates,
+            'outpasses': preferences.outpass_updates,
+            'safety': preferences.safety_announcements,
+        })
+
+    def put(self, request):
+        preferences, _ = NotificationPreference.objects.get_or_create(
+            user=request.user
+        )
+
+        if 'complaints' in request.data:
+            if not isinstance(request.data['complaints'], bool):
+                return Response(
+                    {'complaints': ['Value must be true or false.']},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            preferences.complaint_updates = request.data['complaints']
+
+        if 'outpasses' in request.data:
+            if not isinstance(request.data['outpasses'], bool):
+                return Response(
+                    {'outpasses': ['Value must be true or false.']},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            preferences.outpass_updates = request.data['outpasses']
+
+        if 'safety' in request.data:
+            if not isinstance(request.data['safety'], bool):
+                return Response(
+                    {'safety': ['Value must be true or false.']},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            preferences.safety_announcements = request.data['safety']
+
+        preferences.save()
+
+        return Response({
+            'message': 'Notification preferences updated successfully.',
+            'complaints': preferences.complaint_updates,
+            'outpasses': preferences.outpass_updates,
+            'safety': preferences.safety_announcements,
+        })

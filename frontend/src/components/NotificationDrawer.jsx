@@ -42,7 +42,7 @@ export default function NotificationDrawer() {
      * or outpass, so we open the notification details page
      * and send the complete notification through router state.
      */
-    navigate('/notifications/details', {
+    navigate(`/notifications/${item.id}`, {
       state: {
         notification: item
       }
