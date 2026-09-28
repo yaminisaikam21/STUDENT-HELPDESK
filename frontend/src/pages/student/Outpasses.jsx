@@ -48,13 +48,13 @@ export default function Outpasses() {
   }, [search, selectedStatus]);
 
   return (
-    <div className="min-h-screen bg-[#2B211B] text-white">
+    <div className="min-h-screen bg-[#F4EBDD] text-[#2B211B]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-7">
 
         {/* =========================================================
             PAGE HEADER
         ========================================================== */}
-        <div className="relative overflow-hidden rounded-[28px] border border-[#6B4A35] bg-[#4A3426] px-6 py-7 sm:px-8 sm:py-8">
+        <div className="relative overflow-hidden rounded-[28px] border border-[#6B4A35] bg-[#3A2A20] px-6 py-7 sm:px-8 sm:py-8">
 
           {/* Decorative circles */}
           <div className="absolute -right-20 -top-24 w-64 h-64 rounded-full border border-[#6B4A35]/40 pointer-events-none" />
@@ -68,37 +68,37 @@ export default function Outpasses() {
                   <FileCheck2 className="w-4 h-4 text-[#E7D8C5]" />
                 </div>
 
-                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.16em] text-[#B58A4A]">
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.16em] text-[#C9A66B]">
                   Student HelpDesk
                 </span>
               </div>
 
-              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#FAF9F6]">
+              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#F4EFE5]">
                 Residential Outpass Portal
               </h1>
 
-              <p className="mt-2 text-sm text-[#B8C9C3] max-w-xl leading-relaxed">
+              <p className="mt-2 text-sm text-[#C9BDB3] max-w-xl leading-relaxed">
                 Manage your digital permission requests, travel schedules,
                 guardian verification, and approval progress.
               </p>
 
-              <div className="flex flex-wrap items-center gap-4 mt-5 text-xs text-[#A9BCB6]">
+              <div className="flex flex-wrap items-center gap-4 mt-5 text-xs text-[#B8A99E]">
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-[#B58A4A]" />
+                  <Calendar className="w-3.5 h-3.5 text-[#C9A66B]" />
                   Travel Schedule
                 </span>
 
                 <span className="w-1 h-1 rounded-full bg-[#8B684D]" />
 
                 <span className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#B58A4A]" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#C9A66B]" />
                   Guardian Verification
                 </span>
 
                 <span className="w-1 h-1 rounded-full bg-[#8B684D]" />
 
                 <span className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-[#B58A4A]" />
+                  <Clock className="w-3.5 h-3.5 text-[#C9A66B]" />
                   Approval Tracking
                 </span>
               </div>
@@ -106,7 +106,7 @@ export default function Outpasses() {
 
             <Link
               to="/outpasses/create"
-              className="relative inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#B58A4A] hover:bg-[#B08838] text-[#2B211B] text-sm font-bold shadow-[0_8px_25px_rgba(196,154,69,0.18)] transition-all duration-200 hover:-translate-y-0.5 self-start lg:self-center"
+              className="relative inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#C9A66B] hover:bg-[#D8B979] text-[#2B211B] text-sm font-bold shadow-[0_8px_25px_rgba(201,166,107,0.18)] transition-all duration-200 hover:-translate-y-0.5 self-start lg:self-center"
             >
               <FileCheck2 className="w-4 h-4" />
               <span>Apply for Outpass</span>
@@ -119,19 +119,19 @@ export default function Outpasses() {
         {/* =========================================================
             SEARCH + FILTER
         ========================================================== */}
-        <div className="rounded-2xl border border-[#6B4A35] bg-[#0D211C] p-4 sm:p-5">
+        <div className="rounded-2xl border border-[#D7C7B6] bg-[#FFFCF7] p-4 sm:p-5 shadow-sm">
 
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg bg-[#173C33] border border-[#6B4A35] flex items-center justify-center">
-              <Search className="w-4 h-4 text-[#8B684D]" />
+            <div className="w-8 h-8 rounded-lg bg-[#F0E3D4] border border-[#D7C7B6] flex items-center justify-center">
+              <Search className="w-4 h-4 text-[#79563F]" />
             </div>
 
             <div>
-              <p className="text-xs font-bold text-[#E7D8C5]">
+              <p className="text-xs font-bold text-[#2B211B]">
                 Find an Outpass
               </p>
 
-              <p className="text-[11px] text-[#7A8581]">
+              <p className="text-[11px] text-[#7A6B60]">
                 Search your travel requests or filter by approval status
               </p>
             </div>
@@ -142,7 +142,7 @@ export default function Outpasses() {
             {/* Search */}
             <div className="relative flex-1">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                <Search className="w-4 h-4 text-[#5D7A72]" />
+                <Search className="w-4 h-4 text-[#907D6F]" />
               </div>
 
               <input
@@ -150,7 +150,7 @@ export default function Outpasses() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search by destination or reason..."
-                className="w-full pl-10 pr-4 py-3 text-xs sm:text-sm rounded-xl border border-[#6B4A35] bg-[#2B211B] text-[#F5F7F6] placeholder:text-[#5D706A] outline-none transition-all focus:border-[#8B684D] focus:ring-1 focus:ring-[#6B4A35]"
+                className="w-full pl-10 pr-4 py-3 text-xs sm:text-sm rounded-xl border border-[#D7C7B6] bg-[#FFFDFC] text-[#2B211B] placeholder:text-[#A99688] outline-none transition-all focus:border-[#8B684D] focus:ring-1 focus:ring-[#C9A66B]"
               />
             </div>
 
@@ -159,7 +159,7 @@ export default function Outpasses() {
               <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
-                className="w-full px-3.5 py-3 text-xs sm:text-sm rounded-xl border border-[#6B4A35] bg-[#2B211B] text-[#D9E4E0] outline-none transition-all focus:border-[#8B684D] focus:ring-1 focus:ring-[#6B4A35]"
+                className="w-full px-3.5 py-3 text-xs sm:text-sm rounded-xl border border-[#D7C7B6] bg-[#FFFDFC] text-[#5C4A3D] outline-none transition-all focus:border-[#8B684D] focus:ring-1 focus:ring-[#C9A66B]"
               >
                 <option value="All">All Statuses</option>
 
@@ -182,24 +182,24 @@ export default function Outpasses() {
 
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="w-3.5 h-3.5 text-[#B58A4A]" />
+              <Sparkles className="w-3.5 h-3.5 text-[#C9A66B]" />
 
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.15em] text-[#B58A4A]">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.15em] text-[#C9A66B]">
                 Requests
               </span>
             </div>
 
-            <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#F5F7F6]">
+            <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#2B211B]">
               Your Outpasses
             </h2>
 
-            <p className="text-xs text-[#7A8581] mt-1">
+            <p className="text-xs text-[#6F6259] mt-1">
               Track your hostel travel permission requests
             </p>
           </div>
 
           {!loading && outpasses.length > 0 && (
-            <span className="hidden sm:block text-[11px] font-semibold text-[#66877E]">
+            <span className="hidden sm:block text-[11px] font-semibold text-[#79563F]">
               {outpasses.length} request{outpasses.length !== 1 ? 's' : ''}
             </span>
           )}
@@ -219,17 +219,17 @@ export default function Outpasses() {
           /* =======================================================
              EMPTY STATE
           ======================================================== */
-          <div className="rounded-3xl border border-[#6B4A35] bg-[#0D211C] p-8 sm:p-12 text-center">
+          <div className="rounded-3xl border border-[#6B4A35] bg-[#3A2A20] p-8 sm:p-12 text-center">
 
-            <div className="mx-auto w-14 h-14 rounded-2xl bg-[#173C33] border border-[#6B4A35] flex items-center justify-center">
-              <Calendar className="w-6 h-6 text-[#8B684D]" />
+            <div className="mx-auto w-14 h-14 rounded-2xl bg-[#6B4A35] border border-[#8B684D] flex items-center justify-center">
+              <Calendar className="w-6 h-6 text-[#C9A66B]" />
             </div>
 
-            <h3 className="mt-5 font-heading text-lg font-bold text-[#F5F7F6]">
+            <h3 className="mt-5 font-heading text-lg font-bold text-[#F4EFE5]">
               No outpasses found
             </h3>
 
-            <p className="mt-2 text-xs sm:text-sm text-[#7A8581] max-w-md mx-auto leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-[#A99688] max-w-md mx-auto leading-relaxed">
               You currently have no outpass applications registered under
               this filter.
             </p>
@@ -238,7 +238,7 @@ export default function Outpasses() {
               onClick={() => {
                 window.location.href = '/outpasses/create';
               }}
-              className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#B58A4A] hover:bg-[#B08838] text-[#2B211B] text-xs font-bold transition-colors"
+              className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#C9A66B] hover:bg-[#D8B979] text-[#2B211B] text-xs font-bold transition-colors"
             >
               <FileCheck2 className="w-4 h-4" />
               Apply for New Outpass
@@ -258,11 +258,11 @@ export default function Outpasses() {
               <Link
                 key={item.id}
                 to={`/outpasses/${item.id}`}
-                className="group relative overflow-hidden rounded-2xl border border-[#6B4A35] bg-[#0D211C] hover:border-[#6B4A35] hover:bg-[#102720] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_35px_rgba(42,107,92,0.12)]"
+                className="group relative overflow-hidden rounded-2xl border border-[#6B4A35] bg-[#3A2A20] hover:border-[#8B684D] hover:bg-[#4A3426] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_35px_rgba(74,52,38,0.18)]"
               >
 
                 {/* Decorative top glow */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#6B4A35] to-transparent opacity-70" />
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#C9A66B] to-transparent opacity-60" />
 
                 <div className="p-5 sm:p-6">
 
@@ -270,16 +270,16 @@ export default function Outpasses() {
                   <div className="flex items-center justify-between gap-3">
 
                     <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-xl bg-[#173C33] border border-[#6B4A35] flex items-center justify-center shrink-0">
-                        <FileCheck2 className="w-4 h-4 text-[#8B684D]" />
+                      <div className="w-9 h-9 rounded-xl bg-[#6B4A35] border border-[#8B684D] flex items-center justify-center shrink-0">
+                        <FileCheck2 className="w-4 h-4 text-[#C9A66B]" />
                       </div>
 
                       <div>
-                        <span className="block text-[9px] uppercase tracking-wider text-[#667D76]">
+                        <span className="block text-[9px] uppercase tracking-wider text-[#907D6F]">
                           Digital Gate Pass
                         </span>
 
-                        <span className="text-xs font-mono font-bold text-[#A7B9B4]">
+                        <span className="text-xs font-mono font-bold text-[#D8CDC4]">
                           Outpass #{item.id}
                         </span>
                       </div>
@@ -296,9 +296,9 @@ export default function Outpasses() {
                   {/* Destination */}
                   <div className="mt-5">
 
-                    <h3 className="font-heading font-bold text-lg text-[#F5F7F6] group-hover:text-[#7FB3A3] transition-colors flex items-start gap-2">
+                    <h3 className="font-heading font-bold text-lg text-[#F4EFE5] group-hover:text-[#C9A66B] transition-colors flex items-start gap-2">
 
-                      <MapPin className="w-4 h-4 mt-1 text-[#8B684D] shrink-0" />
+                      <MapPin className="w-4 h-4 mt-1 text-[#C9A66B] shrink-0" />
 
                       <span className="line-clamp-2">
                         {item.destination}
@@ -306,7 +306,7 @@ export default function Outpasses() {
 
                     </h3>
 
-                    <p className="text-xs text-[#83958F] line-clamp-2 mt-2 leading-relaxed">
+                    <p className="text-xs text-[#A99688] line-clamp-2 mt-2 leading-relaxed">
                       {item.reason}
                     </p>
 
@@ -314,14 +314,14 @@ export default function Outpasses() {
 
 
                   {/* Travel schedule */}
-                  <div className="mt-5 rounded-xl border border-[#6B4A35] bg-[#2B211B] overflow-hidden">
+                  <div className="mt-5 rounded-xl border border-[#6B4A35] bg-[#241B16] overflow-hidden">
 
-                    <div className="px-3.5 py-3 border-b border-[#1B342E]">
+                    <div className="px-3.5 py-3 border-b border-[#6B4A35]">
 
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-3.5 h-3.5 text-[#B58A4A]" />
+                        <Calendar className="w-3.5 h-3.5 text-[#C9A66B]" />
 
-                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#778B85]">
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#907D6F]">
                           Travel Schedule
                         </span>
                       </div>
@@ -333,11 +333,11 @@ export default function Outpasses() {
                       <div className="flex items-start justify-between gap-4">
 
                         <div>
-                          <span className="block text-[10px] text-[#62756F] uppercase tracking-wide">
+                          <span className="block text-[10px] text-[#907D6F] uppercase tracking-wide">
                             Departure
                           </span>
 
-                          <span className="block mt-0.5 text-xs font-semibold text-[#D9E4E0]">
+                          <span className="block mt-0.5 text-xs font-semibold text-[#D8CDC4]">
                             {new Date(item.from_date).toLocaleString([], {
                               dateStyle: 'medium',
                               timeStyle: 'short',
@@ -346,15 +346,15 @@ export default function Outpasses() {
                         </div>
 
                         <div className="w-7 h-7 rounded-lg bg-[#4A3426] flex items-center justify-center shrink-0">
-                          <ChevronRight className="w-3.5 h-3.5 text-[#8B684D]" />
+                          <ChevronRight className="w-3.5 h-3.5 text-[#C9A66B]" />
                         </div>
 
                         <div className="text-right">
-                          <span className="block text-[10px] text-[#62756F] uppercase tracking-wide">
+                          <span className="block text-[10px] text-[#907D6F] uppercase tracking-wide">
                             Return
                           </span>
 
-                          <span className="block mt-0.5 text-xs font-semibold text-[#D9E4E0]">
+                          <span className="block mt-0.5 text-xs font-semibold text-[#D8CDC4]">
                             {new Date(item.to_date).toLocaleString([], {
                               dateStyle: 'medium',
                               timeStyle: 'short',
@@ -374,22 +374,22 @@ export default function Outpasses() {
                     <div className="flex items-center gap-2 min-w-0">
 
                       <div className="w-7 h-7 rounded-lg bg-[#4A3426] flex items-center justify-center shrink-0">
-                        <ShieldCheck className="w-3.5 h-3.5 text-[#8B684D]" />
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#C9A66B]" />
                       </div>
 
                       <div className="min-w-0">
-                        <span className="block text-[9px] uppercase tracking-wider text-[#62756F]">
+                        <span className="block text-[9px] uppercase tracking-wider text-[#907D6F]">
                           Guardian Verification
                         </span>
 
-                        <span className="block text-xs font-semibold text-[#B8C9C3] truncate">
+                        <span className="block text-xs font-semibold text-[#C9BDB3] truncate">
                           {item.verification_status}
                         </span>
                       </div>
 
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#B58A4A] group-hover:text-[#E7D8C5] transition-colors shrink-0">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#C9A66B] group-hover:text-[#F4EFE5] transition-colors shrink-0">
                       <span>Track Status</span>
 
                       <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />

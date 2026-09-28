@@ -9,10 +9,20 @@ import {
   ShieldOff,
   CheckCircle2
 } from 'lucide-react';
+
 import { complaintService } from '../../services/complaintService';
-import { COMPLAINT_CATEGORIES, COMPLAINT_STATUSES } from '../../utils/constants';
-import StatusBadge, { PriorityBadge } from '../../components/StatusBadge';
-import LoadingSkeleton, { EmptyState } from '../../components/LoadingSkeleton';
+import {
+  COMPLAINT_CATEGORIES,
+  COMPLAINT_STATUSES
+} from '../../utils/constants';
+
+import StatusBadge, {
+  PriorityBadge
+} from '../../components/StatusBadge';
+
+import LoadingSkeleton, {
+  EmptyState
+} from '../../components/LoadingSkeleton';
 
 export default function Complaints() {
   const [complaints, setComplaints] = useState([]);
@@ -24,12 +34,21 @@ export default function Complaints() {
   const fetchComplaints = async () => {
     try {
       setLoading(true);
+
       const params = {};
+
       if (search) params.search = search;
-      if (selectedCategory !== 'All') params.category = selectedCategory;
-      if (selectedStatus !== 'All') params.status = selectedStatus;
+
+      if (selectedCategory !== 'All') {
+        params.category = selectedCategory;
+      }
+
+      if (selectedStatus !== 'All') {
+        params.status = selectedStatus;
+      }
 
       const data = await complaintService.getComplaints(params);
+
       setComplaints(data.results || data || []);
     } catch (err) {
       console.error('Failed to fetch complaints:', err);
@@ -42,85 +61,124 @@ export default function Complaints() {
     const delayDebounceFn = setTimeout(() => {
       fetchComplaints();
     }, 250);
+
     return () => clearTimeout(delayDebounceFn);
   }, [search, selectedCategory, selectedStatus]);
 
   return (
-    <div className="min-h-screen w-full bg-[#2B211B]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="min-h-screen w-full bg-[#F4EBDD] text-[#2B211B]">
+
+      <div className="mx-auto max-w-7xl space-y-7 px-4 py-8 sm:px-6 lg:px-8">
+
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
           <div>
-            <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white">
+            <h1 className="font-heading text-2xl font-bold text-[#2B211B] sm:text-3xl">
               Campus Grievance & Maintenance Desk
             </h1>
-            <p className="text-xs sm:text-sm text-white/60">
-              Track your open complaints, dialogue with technicians, and review resolutions
+
+            <p className="mt-1 text-xs text-[#6F6259] sm:text-sm">
+              Track your open complaints, dialogue with technicians,
+              and review resolutions
             </p>
           </div>
+
           <Link
             to="/complaints/create"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#C9A66B] text-[#2B211B] text-xs sm:text-sm font-semibold hover:bg-[#c99b4c] shadow-sm transition-colors self-start sm:self-auto"
+            className="inline-flex items-center gap-2 self-start rounded-xl bg-[#C9A66B] px-4 py-2.5 text-xs font-bold text-[#2B211B] shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#D8B979] sm:self-auto"
           >
-            <PlusCircle className="w-4 h-4" />
+            <PlusCircle className="h-4 w-4" />
             <span>Lodge New Complaint</span>
           </Link>
+
         </div>
 
-        {/* Filter and Search Controls */}
-        <div className="p-4 rounded-2xl bg-[#3A2A20] border border-[#6B4A35] shadow-xs flex flex-col md:flex-row gap-3">
+        {/* Search and Filters */}
+
+        <div className="flex flex-col gap-3 rounded-2xl border border-[#D8CBB9] bg-[#FFF9EF] p-4 shadow-sm md:flex-row">
+
           {/* Search */}
+
           <div className="relative flex-1">
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#8B684D]">
-              <Search className="w-4 h-4" />
+
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[#8B684D]">
+              <Search className="h-4 w-4" />
             </div>
+
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by title, room number, or description..."
-              className="w-full pl-10 pr-4 py-2 text-xs sm:text-sm rounded-xl border border-[#D8CBB9] bg-[#F3EBDD] focus:ring-2 focus:ring-[#C9A66B] outline-none text-[#4A3426] placeholder:text-slate-500"
+              className="w-full rounded-xl border border-[#D8CBB9] bg-[#F4EBDD] py-2.5 pl-10 pr-4 text-xs text-[#4A3426] outline-none placeholder:text-[#8B7A6C] focus:border-[#C9A66B] focus:ring-2 focus:ring-[#C9A66B]/30 sm:text-sm"
             />
+
           </div>
 
           {/* Category Filter */}
+
           <div className="w-full md:w-56">
+
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-[#D8CBB9] bg-[#F3EBDD] focus:ring-2 focus:ring-[#C9A66B] outline-none text-[#4A3426]"
+              className="w-full rounded-xl border border-[#D8CBB9] bg-[#F4EBDD] px-3 py-2.5 text-xs text-[#4A3426] outline-none focus:border-[#C9A66B] focus:ring-2 focus:ring-[#C9A66B]/30 sm:text-sm"
             >
-              <option value="All">All Categories</option>
+
+              <option value="All">
+                All Categories
+              </option>
+
               {COMPLAINT_CATEGORIES.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
                 </option>
               ))}
+
             </select>
+
           </div>
 
           {/* Status Filter */}
+
           <div className="w-full md:w-44">
+
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-[#D8CBB9] bg-[#F3EBDD] focus:ring-2 focus:ring-[#C9A66B] outline-none text-[#4A3426]"
+              className="w-full rounded-xl border border-[#D8CBB9] bg-[#F4EBDD] px-3 py-2.5 text-xs text-[#4A3426] outline-none focus:border-[#C9A66B] focus:ring-2 focus:ring-[#C9A66B]/30 sm:text-sm"
             >
-              <option value="All">All Statuses</option>
+
+              <option value="All">
+                All Statuses
+              </option>
+
               {COMPLAINT_STATUSES.map((st) => (
                 <option key={st} value={st}>
                   {st}
                 </option>
               ))}
+
             </select>
+
           </div>
+
         </div>
 
         {/* Complaints List */}
+
         {loading ? (
-          <LoadingSkeleton count={4} />
+
+          <div className="rounded-2xl border border-[#6B4A35] bg-[#3A2A20] p-4">
+            <LoadingSkeleton count={4} />
+          </div>
+
         ) : complaints.length === 0 ? (
-          <div className="p-8 rounded-2xl bg-[#3A2A20] border border-[#6B4A35]">
+
+          <div className="rounded-2xl border border-[#6B4A35] bg-[#3A2A20] p-8">
+
             <EmptyState
               title="No complaints found"
               message="There are no complaint tickets matching your selected filters or search query."
@@ -132,95 +190,128 @@ export default function Complaints() {
               }}
               icon={CheckCircle2}
             />
+
           </div>
+
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+
             {complaints.map((item) => (
+
               <Link
                 key={item.id}
                 to={`/complaints/${item.id}`}
-                className="p-5 rounded-2xl bg-[#3A2A20] border border-[#6B4A35] hover:border-[#8B684D] hover:bg-[#4A3426] transition-all flex flex-col justify-between group"
+                className="group flex flex-col justify-between rounded-2xl border border-[#6B4A35] bg-[#3A2A20] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#8B684D] hover:bg-[#4A3426]"
               >
+
                 <div className="space-y-4">
+
                   {/* Complaint Header */}
+
                   <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-xs font-mono font-bold text-white/40">
+
+                    <div className="flex flex-wrap items-center gap-2">
+
+                      <span className="font-mono text-xs font-bold text-[#907D6F]">
                         #{item.id}
                       </span>
 
-                      <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-[#4A3426] border border-[#7A5A40] text-[#C9A66B]">
+                      <span className="rounded-md border border-[#6B4A35]/50 bg-[#6B4A35]/30 px-2.5 py-0.5 text-xs font-semibold text-[#C9A66B]">
                         {item.category}
                       </span>
 
                       <PriorityBadge priority={item.priority} />
+
                     </div>
 
                     <StatusBadge status={item.status} />
+
                   </div>
 
                   {/* Complaint Details */}
+
                   <div>
-                    <h3 className="font-heading font-bold text-base text-white group-hover:text-[#C9A66B] transition-colors">
+
+                    <h3 className="font-heading text-base font-bold text-[#F4EFE5] transition-colors group-hover:text-[#C9A66B]">
                       {item.title}
                     </h3>
 
-                    <p className="text-xs text-white/55 line-clamp-2 mt-1 leading-relaxed">
+                    <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-[#A99688]">
                       {item.description}
                     </p>
+
                   </div>
 
                   {/* Location and Assignment */}
-                  <div className="text-xs text-white/50 space-y-1.5">
+
+                  <div className="space-y-1.5 text-xs text-[#907D6F]">
+
                     <div className="flex items-center gap-1.5">
-                      <Building2 className="w-3.5 h-3.5 text-[#C9A66B] shrink-0" />
+
+                      <Building2 className="h-3.5 w-3.5 shrink-0 text-[#C9A66B]" />
+
                       <span className="truncate">
                         {item.location}
                       </span>
+
                     </div>
 
                     {item.assigned_to && (
-                      <div className="text-[#C9A66B] font-medium">
+                      <div className="font-medium text-[#C9A66B]">
                         Assigned: {item.assigned_to}
                       </div>
                     )}
+
                   </div>
+
                 </div>
 
                 {/* Complaint Footer */}
-                <div className="mt-5 pt-3 border-t border-[#6B4A35] flex items-center justify-between text-xs text-white/50">
+
+                <div className="mt-5 flex items-center justify-between border-t border-[#6B4A35]/60 pt-3 text-xs">
+
                   <div className="flex items-center gap-3">
+
                     {item.anonymous && (
-                      <span className="inline-flex items-center gap-1 text-[11px] text-amber-300 font-medium">
-                        <ShieldOff className="w-3 h-3" />
+                      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#D8B979]">
+                        <ShieldOff className="h-3 w-3" />
                         Anonymous
                       </span>
                     )}
 
                     {item.attachment && (
-                      <span className="inline-flex items-center gap-1 text-[11px] text-[#C9A66B] font-medium">
-                        <Paperclip className="w-3 h-3" />
+                      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#C9A66B]">
+                        <Paperclip className="h-3 w-3" />
                         Attachment
                       </span>
                     )}
 
                     {item.comments_count > 0 && (
-                      <span className="inline-flex items-center gap-1 text-[11px] text-white/45">
-                        <MessageSquare className="w-3 h-3" />
+                      <span className="inline-flex items-center gap-1 text-[11px] text-[#907D6F]">
+                        <MessageSquare className="h-3 w-3" />
                         {item.comments_count} remarks
                       </span>
                     )}
+
                   </div>
 
-                  <span className="text-white/30 text-[11px]">
+                  <span className="text-[11px] text-[#796A5F]">
                     {new Date(item.created_at).toLocaleDateString()}
                   </span>
+
                 </div>
+
               </Link>
+
             ))}
+
           </div>
+
         )}
+
       </div>
+
     </div>
   );
 }
