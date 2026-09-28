@@ -107,7 +107,7 @@ export default function NotificationDrawer() {
               damping: 26,
               stiffness: 260
             }}
-            className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl border-l border-brand-border flex flex-col"
+            className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-[#F3EBDD] shadow-2xl border-l border-brand-border flex flex-col"
           >
 
             {/* Header */}

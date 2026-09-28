@@ -28,7 +28,7 @@ export default function WardenHome() {
       try {
         setLoading(true);
         const [outpassData, studentsResponse] = await Promise.all([
-          outpassService.getOutpasses({ status: 'Parent Verification' }),
+          outpassService.getOutpasses({ verification_status: 'Pending' }),
           api.get('/api/auth/students/'),
         ]);
 
@@ -45,7 +45,7 @@ export default function WardenHome() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#2B211B] py-8">
+    <div className="min-h-screen bg-[#F3EBDD] py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header Banner */}
         <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#2B211B] via-[#3A2A20] to-[#2B211B] text-[#F7F1E8] border border-[#6B4A35] shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-6">

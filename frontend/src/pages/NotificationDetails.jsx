@@ -78,7 +78,7 @@ export default function NotificationDetails() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-80px)] bg-[#2B211B]">
+    <div className="min-h-[calc(100vh-80px)] bg-[#F3EBDD]">
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
@@ -141,9 +141,9 @@ export default function NotificationDetails() {
               Notification
             </h2>
 
-            <div className="rounded-2xl bg-[#09221B] border border-[#6B4A35] p-5">
+                <div className="rounded-2xl bg-[#F3EBDD] border border-[#C9A66B] p-5">
 
-              <p className="text-sm sm:text-base text-[#E7D8C5] leading-7 whitespace-pre-wrap">
+              <p className="text-sm sm:text-base text-[#2B211B] leading-7 whitespace-pre-wrap">
                 {notification.message}
               </p>
 
