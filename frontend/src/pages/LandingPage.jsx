@@ -48,9 +48,7 @@ export default function LandingPage() {
   }, []);
 
   /*
-   * Scroll animation:
-   * Elements enter from bottom when scrolling down
-   * and from top when scrolling back up.
+   * Scroll animation.
    */
   const sectionAnimation = {
     initial: {
@@ -279,7 +277,7 @@ export default function LandingPage() {
   const ActiveIcon = active.icon;
 
   return (
-    <div className="bg-[#2B211B] text-[#F7F1E8] overflow-hidden">
+    <div className="bg-[#2B211B] text-[#F7F1E8] overflow-x-hidden w-full max-w-full min-w-0">
       {/* =========================================================
           FONT + GLOBAL SCROLL
       ========================================================== */}
@@ -297,27 +295,45 @@ export default function LandingPage() {
             scroll-behavior: smooth;
           }
 
+          body {
+            overflow-x: hidden;
+          }
+
           section {
             scroll-margin-top: 68px;
+          }
+
+          @media (max-width: 767px) {
+            section {
+              scroll-margin-top: 20px;
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            html {
+              scroll-behavior: auto;
+            }
           }
         `}
       </style>
 
       {/* =========================================================
           HERO
-          IMPORTANT:
-          Navbar = 68px
-          Hero = calc(100vh - 68px)
-          Therefore Navbar + Hero = exactly 100vh
       ========================================================== */}
 
       <section
         className="
           relative
-          min-h-[calc(100vh-68px)]
-          h-[calc(100vh-68px)]
+          min-h-[calc(100svh-68px)]
+          lg:h-[calc(100vh-68px)]
+          lg:min-h-[calc(100vh-68px)]
           overflow-hidden
-          flex items-center
+          flex
+          items-center
+          py-16
+          sm:py-20
+          md:py-24
+          lg:py-0
         "
         style={{
           backgroundImage:
@@ -334,21 +350,58 @@ export default function LandingPage() {
 
         {/* Gold glow */}
 
-        <div className="absolute top-0 left-[35%] w-[500px] h-[500px] bg-[#B58A4A]/10 blur-[130px] rounded-full pointer-events-none" />
+        <div
+          className="
+            absolute
+            top-0
+            left-[20%]
+            sm:left-[35%]
+            w-[300px]
+            sm:w-[500px]
+            h-[300px]
+            sm:h-[500px]
+            bg-[#B58A4A]/10
+            blur-[100px]
+            sm:blur-[130px]
+            rounded-full
+            pointer-events-none
+          "
+        />
 
         {/* Hero Content */}
 
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-14">
-          <div className="max-w-[650px]">
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-5 sm:px-8 md:px-10 lg:px-14">
+          <div className="max-w-[650px] mx-auto lg:mx-0">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="flex items-center gap-3 mb-6 lg:mb-7"
+              className="
+                flex
+                items-center
+                justify-center
+                lg:justify-start
+                gap-3
+                mb-6
+                lg:mb-7
+              "
             >
-              <Sparkles className="w-4 h-4 text-[#B58A4A]" />
+              <Sparkles className="w-4 h-4 text-[#B58A4A] shrink-0" />
 
-              <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] font-medium text-[#C9A66B]">
+              <span
+                className="
+                  text-[9px]
+                  xs:text-[10px]
+                  sm:text-xs
+                  uppercase
+                  tracking-[0.14em]
+                  sm:tracking-[0.2em]
+                  lg:tracking-[0.25em]
+                  font-medium
+                  text-[#C9A66B]
+                  text-center
+                "
+              >
                 Campus support, made easier
               </span>
             </motion.div>
@@ -359,9 +412,12 @@ export default function LandingPage() {
               transition={{ duration: 0.7, delay: 0.1 }}
               className="
                 premium-serif
-                text-[48px]
+                text-[clamp(3rem,13vw,4.5rem)]
                 sm:text-[60px]
+                md:text-[68px]
                 lg:text-[76px]
+                text-center
+                lg:text-left
                 leading-[0.98]
                 tracking-[-0.025em]
                 text-white
@@ -376,7 +432,14 @@ export default function LandingPage() {
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: 58, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="h-[2px] bg-[#B58A4A] mt-7 mb-6"
+              className="
+                h-[2px]
+                bg-[#B58A4A]
+                mt-7
+                mb-6
+                mx-auto
+                lg:mx-0
+              "
             />
 
             <motion.p
@@ -389,6 +452,10 @@ export default function LandingPage() {
                 leading-7
                 text-[#dedbd2]
                 max-w-[590px]
+                mx-auto
+                lg:mx-0
+                text-center
+                lg:text-left
               "
             >
               Raise a complaint, request an outpass, follow updates,
@@ -399,7 +466,19 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
-              className="flex flex-col sm:flex-row gap-3 mt-7"
+              className="
+                flex
+                flex-col
+                sm:flex-row
+                gap-3
+                sm:gap-4
+                mt-8
+                w-full
+                max-w-[420px]
+                sm:max-w-none
+                mx-auto
+                lg:mx-0
+              "
             >
               <Link
                 to="/register"
@@ -409,20 +488,24 @@ export default function LandingPage() {
                   justify-center
                   gap-4
                   px-7
-                  py-3.5
+                  py-4
+                  min-h-[54px]
                   rounded-full
                   bg-[#C9A66B]
                   text-[#2B211B]
                   text-xs
                   font-bold
                   uppercase
-                  tracking-[0.15em]
+                  tracking-[0.12em]
+                  sm:tracking-[0.15em]
                   hover:bg-[#D4B47A]
                   transition-all
+                  w-full
+                  sm:w-auto
                 "
               >
                 Get Started
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 shrink-0" />
               </Link>
 
               <a
@@ -433,7 +516,8 @@ export default function LandingPage() {
                   justify-center
                   gap-4
                   px-7
-                  py-3.5
+                  py-4
+                  min-h-[54px]
                   rounded-full
                   border
                   border-[#b9b4a6]/60
@@ -441,13 +525,16 @@ export default function LandingPage() {
                   text-xs
                   font-bold
                   uppercase
-                  tracking-[0.15em]
+                  tracking-[0.12em]
+                  sm:tracking-[0.15em]
                   hover:bg-white/10
                   transition-all
+                  w-full
+                  sm:w-auto
                 "
               >
                 See How It Works
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 shrink-0" />
               </a>
             </motion.div>
 
@@ -455,16 +542,32 @@ export default function LandingPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.5 }}
-              className="flex flex-wrap gap-x-7 gap-y-3 mt-7"
+              className="
+                flex
+                flex-wrap
+                justify-center
+                lg:justify-start
+                gap-x-6
+                sm:gap-x-7
+                gap-y-3
+                mt-8
+              "
             >
               {["Easy requests", "Live updates", "Secure access"].map(
                 (item) => (
                   <div
                     key={item}
-                    className="flex items-center gap-2 text-xs sm:text-sm text-[#D8CBB9]"
+                    className="
+                      flex
+                      items-center
+                      gap-2
+                      text-xs
+                      sm:text-sm
+                      text-[#D8CBB9]
+                    "
                   >
-                    <CheckCircle2 className="w-4 h-4 text-[#B58A4A]" />
-                    {item}
+                    <CheckCircle2 className="w-4 h-4 text-[#B58A4A] shrink-0" />
+                    <span>{item}</span>
                   </div>
                 )
               )}
@@ -474,7 +577,21 @@ export default function LandingPage() {
 
         {/* HERO SIDE CARDS */}
 
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 hidden lg:flex flex-col gap-3 w-[275px]">
+        <div
+          className="
+            absolute
+            right-0
+            top-1/2
+            -translate-y-1/2
+            z-20
+            hidden
+            lg:flex
+            flex-col
+            gap-3
+            w-[250px]
+            xl:w-[275px]
+          "
+        >
           {[
             {
               icon: CheckCircle2,
@@ -511,24 +628,26 @@ export default function LandingPage() {
                 className="
                   bg-[#f4f0e7]
                   rounded-l-2xl
-                  px-5
+                  px-4
+                  xl:px-5
                   py-3.5
                   shadow-[0_10px_40px_rgba(0,0,0,0.18)]
                   flex
                   items-center
-                  gap-4
+                  gap-3
+                  xl:gap-4
                 "
               >
                 <div className="w-10 h-10 rounded-full bg-[#dce9df] flex items-center justify-center shrink-0">
                   <Icon className="w-5 h-5 text-[#286052]" />
                 </div>
 
-                <div>
-                  <p className="text-sm font-semibold text-[#15241f]">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-[#15241f] truncate">
                     {item.title}
                   </p>
 
-                  <p className="text-[11px] text-[#7a817a] mt-1">
+                  <p className="text-[11px] text-[#7a817a] mt-1 leading-4">
                     {item.desc}
                   </p>
                 </div>
@@ -539,41 +658,102 @@ export default function LandingPage() {
       </section>
 
       {/* =========================================================
-          WHITE / CREAM INTRO SECTION
+          INTRO SECTION
       ========================================================== */}
 
       <motion.section
         id="about"
         {...sectionAnimation}
-        className="bg-[#f5f1e9] text-[#4A3426] border-b border-[#ddd4c5]"
+        className="
+          bg-[#f5f1e9]
+          text-[#4A3426]
+          border-b
+          border-[#ddd4c5]
+        "
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 py-10 lg:py-11">
-          <div className="grid lg:grid-cols-[1fr_auto] items-center gap-7">
-            <div>
+        <div
+          className="
+            max-w-7xl
+            mx-auto
+            px-5
+            sm:px-8
+            md:px-10
+            lg:px-14
+            py-10
+            sm:py-12
+            lg:py-11
+          "
+        >
+          <div
+            className="
+              grid
+              lg:grid-cols-[minmax(0,1fr)_auto]
+              items-center
+              gap-7
+              lg:gap-10
+            "
+          >
+            <div className="min-w-0">
               <div className="flex items-center gap-3 mb-3">
-                <span className="w-7 h-px bg-[#B58A4A]" />
+                <span className="w-7 h-px bg-[#B58A4A] shrink-0" />
 
-                <span className="text-[10px] uppercase tracking-[0.25em] font-semibold text-[#a37b3b]">
+                <span
+                  className="
+                    text-[9px]
+                    sm:text-[10px]
+                    uppercase
+                    tracking-[0.16em]
+                    sm:tracking-[0.25em]
+                    font-semibold
+                    text-[#a37b3b]
+                  "
+                >
                   Built around campus life
                 </span>
               </div>
 
-              <h2 className="premium-serif text-3xl sm:text-4xl lg:text-[42px] leading-tight">
+              <h2
+                className="
+                  premium-serif
+                  text-[30px]
+                  xs:text-[32px]
+                  sm:text-4xl
+                  lg:text-[42px]
+                  leading-tight
+                "
+              >
                 A simpler way to ask for help,
-                <br />
+                <br className="hidden sm:block" />
                 <span className="italic text-[#b88d4b]">
                   whenever you need it.
                 </span>
               </h2>
 
-              <p className="mt-3 max-w-2xl text-sm text-[#69736e] leading-6">
+              <p
+                className="
+                  mt-3
+                  max-w-2xl
+                  text-sm
+                  sm:text-[15px]
+                  text-[#69736e]
+                  leading-6
+                "
+              >
                 Student HelpDesk brings everyday campus support into
                 one connected experience — from reporting an issue to
                 following what happens next.
               </p>
             </div>
 
-            <div className="flex flex-wrap lg:max-w-[360px] gap-2 lg:justify-end">
+            <div
+              className="
+                flex
+                flex-wrap
+                lg:max-w-[360px]
+                gap-2
+                lg:justify-end
+              "
+            >
               {[
                 "Complaints",
                 "Outpasses",
@@ -588,9 +768,11 @@ export default function LandingPage() {
                     rounded-full
                     border
                     border-[#d5cab8]
-                    text-[10px]
+                    text-[9px]
+                    sm:text-[10px]
                     uppercase
-                    tracking-[0.15em]
+                    tracking-[0.1em]
+                    sm:tracking-[0.15em]
                     text-[#52615b]
                   "
                 >
@@ -614,7 +796,8 @@ export default function LandingPage() {
           bg-[#06130f]
           text-[#F7F1E8]
           py-14
-          lg:py-16
+          sm:py-16
+          lg:py-20
           overflow-hidden
         "
       >
@@ -622,27 +805,56 @@ export default function LandingPage() {
 
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_35%,rgba(0,0,0,0.42)_100%)]" />
 
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
+        <div
+          className="
+            relative
+            max-w-7xl
+            mx-auto
+            px-5
+            sm:px-8
+            md:px-10
+            lg:px-14
+          "
+        >
           <div className="max-w-3xl mb-8">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-[#B58A4A]">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.25em] text-[#B58A4A]">
               One platform
             </span>
 
-            <h2 className="premium-serif text-3xl sm:text-4xl lg:text-5xl mt-2 leading-tight">
+            <h2
+              className="
+                premium-serif
+                text-[32px]
+                sm:text-4xl
+                lg:text-5xl
+                mt-2
+                leading-tight
+              "
+            >
               Different people,
               <span className="italic text-[#C9A66B]">
                 {" "}different needs.
               </span>
             </h2>
 
-            <p className="text-[#aebdb5] mt-3 max-w-2xl text-sm leading-6">
+            <p className="text-[#aebdb5] mt-3 max-w-2xl text-sm sm:text-[15px] leading-6">
               Students, wardens and administrators each have different
               responsibilities. Student HelpDesk gives everyone the tools
               they need in one connected platform.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
+          <div
+            className="
+              grid
+              grid-cols-1
+              sm:grid-cols-2
+              lg:grid-cols-3
+              gap-4
+              sm:gap-5
+              mb-7
+            "
+          >
             {roles.map((role, index) => {
               const Icon = role.icon;
               const selected = activeRole === index;
@@ -666,7 +878,9 @@ export default function LandingPage() {
                     overflow-hidden
                     rounded-2xl
                     px-5
-                    py-5
+                    py-6
+                    sm:px-5
+                    sm:py-5
                     border
                     transition-colors
                     duration-500
@@ -711,16 +925,16 @@ export default function LandingPage() {
                       <Icon className="w-4 h-4" />
                     </div>
 
-                    <div>
-                      <p className="text-[9px] uppercase tracking-[0.2em] text-[#B58A4A]">
+                    <div className="min-w-0">
+                      <p className="text-[10px] uppercase tracking-[0.15em] text-[#B58A4A]">
                         {role.badge}
                       </p>
 
-                      <h3 className="premium-serif text-xl mt-1">
+                      <h3 className="premium-serif text-xl sm:text-2xl mt-1">
                         {role.title}
                       </h3>
 
-                      <p className="text-xs text-[#aebdb5] mt-1">
+                      <p className="text-xs sm:text-sm text-[#aebdb5] mt-2 leading-5 sm:leading-6">
                         {role.subtitle}
                       </p>
                     </div>
@@ -746,35 +960,58 @@ export default function LandingPage() {
                 from-[#4A3426]
                 via-[#0d2c25]
                 to-[#2B211B]
-                p-6
-                sm:p-8
+                p-5
+                sm:p-7
+                lg:p-8
                 overflow-hidden
               "
             >
-              <div className="absolute right-0 top-0 w-[320px] h-[320px] bg-[#B58A4A]/5 blur-[100px] rounded-full" />
+              <div className="absolute right-0 top-0 w-[250px] sm:w-[320px] h-[250px] sm:h-[320px] bg-[#B58A4A]/5 blur-[100px] rounded-full" />
 
-              <div className="relative grid lg:grid-cols-[1fr_220px] gap-7 items-center">
-                <div>
-                  <span className="inline-flex px-3 py-1 rounded-full border border-[#B58A4A]/30 bg-[#B58A4A]/10 text-[#C9A66B] text-[9px] uppercase tracking-[0.2em]">
+              <div
+                className="
+                  relative
+                  grid
+                  lg:grid-cols-[minmax(0,1fr)_220px]
+                  gap-7
+                  items-center
+                "
+              >
+                <div className="min-w-0">
+                  <span className="inline-flex max-w-full px-3 py-1 rounded-full border border-[#B58A4A]/30 bg-[#B58A4A]/10 text-[#C9A66B] text-[8px] sm:text-[9px] uppercase tracking-[0.16em] sm:tracking-[0.2em]">
                     {active.badge}
                   </span>
 
-                  <h3 className="premium-serif text-3xl sm:text-4xl mt-3">
+                  <h3
+                    className="
+                      premium-serif
+                      text-[30px]
+                      sm:text-4xl
+                      mt-3
+                      leading-tight
+                    "
+                  >
                     {active.title}
                   </h3>
 
-                  <p className="text-[#b8c5bf] text-sm mt-2">
+                  <p className="text-[#b8c5bf] text-sm mt-2 leading-6">
                     {active.subtitle}
                   </p>
 
-                  <div className="grid sm:grid-cols-2 gap-x-8 gap-y-2.5 mt-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 mt-6">
                     {active.features.map((feature) => (
                       <div
                         key={feature}
-                        className="flex items-center gap-3 text-sm text-[#d2dad5]"
+                        className="
+                          flex
+                          items-start
+                          gap-3
+                          text-sm
+                          text-[#d2dad5]
+                        "
                       >
-                        <CheckCircle2 className="w-4 h-4 text-[#B58A4A] shrink-0" />
-                        {feature}
+                        <CheckCircle2 className="w-4 h-4 text-[#B58A4A] shrink-0 mt-0.5" />
+                        <span>{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -784,6 +1021,7 @@ export default function LandingPage() {
                     className="
                       inline-flex
                       items-center
+                      justify-center
                       gap-3
                       mt-6
                       px-6
@@ -795,10 +1033,12 @@ export default function LandingPage() {
                       font-semibold
                       hover:bg-[#D4B47A]
                       transition-colors
+                      w-full
+                      sm:w-auto
                     "
                   >
                     {active.ctaText}
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 shrink-0" />
                   </Link>
                 </div>
 
@@ -824,6 +1064,7 @@ export default function LandingPage() {
                       items-center
                       justify-center
                       text-center
+                      p-4
                     "
                   >
                     <ActiveIcon className="w-8 h-8 text-[#B58A4A]" />
@@ -854,20 +1095,31 @@ export default function LandingPage() {
           bg-[#0b1d18]
           text-[#F7F1E8]
           py-14
-          lg:py-16
+          sm:py-16
+          lg:py-20
           relative
           overflow-hidden
         "
       >
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_80%_20%,rgba(196,154,69,0.08),transparent_35%)]" />
 
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
+        <div
+          className="
+            relative
+            max-w-7xl
+            mx-auto
+            px-5
+            sm:px-8
+            md:px-10
+            lg:px-14
+          "
+        >
           <div className="max-w-2xl mb-8">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-[#B58A4A]">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.25em] text-[#B58A4A]">
               Why Student HelpDesk
             </span>
 
-            <h2 className="premium-serif text-3xl sm:text-4xl lg:text-5xl mt-2">
+            <h2 className="premium-serif text-[32px] sm:text-4xl lg:text-5xl mt-2 leading-tight">
               Less confusion.
               <span className="italic text-[#C9A66B]">
                 {" "}More clarity.
@@ -875,7 +1127,16 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div
+            className="
+              grid
+              grid-cols-1
+              sm:grid-cols-2
+              lg:grid-cols-3
+              gap-4
+              sm:gap-5
+            "
+          >
             {whyUs.map((item) => {
               const Icon = item.icon;
 
@@ -890,6 +1151,8 @@ export default function LandingPage() {
                     border-[#6B4A35]
                     bg-[#102b24]
                     p-5
+                    sm:p-6
+                    lg:p-5
                   "
                 >
                   <div className="w-10 h-10 rounded-full bg-[#183e34] flex items-center justify-center mb-4">
@@ -900,7 +1163,7 @@ export default function LandingPage() {
                     {item.title}
                   </h3>
 
-                  <p className="text-xs text-[#aebdb5] leading-6 mt-2">
+                  <p className="text-xs sm:text-sm text-[#aebdb5] leading-6 mt-3">
                     {item.desc}
                   </p>
                 </motion.div>
@@ -921,29 +1184,48 @@ export default function LandingPage() {
           bg-[#f5f1e9]
           text-[#4A3426]
           py-14
-          lg:py-16
+          sm:py-16
+          lg:py-20
         "
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
+        <div
+          className="
+            max-w-7xl
+            mx-auto
+            px-5
+            sm:px-8
+            md:px-10
+            lg:px-14
+          "
+        >
           <div className="max-w-2xl mb-8">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-[#a37b3b]">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.25em] text-[#a37b3b]">
               Campus concerns
             </span>
 
-            <h2 className="premium-serif text-3xl sm:text-4xl lg:text-5xl mt-2">
+            <h2 className="premium-serif text-[32px] sm:text-4xl lg:text-5xl mt-2 leading-tight">
               Problems students
               <span className="italic text-[#b88d4b]">
                 {" "}face every day.
               </span>
             </h2>
 
-            <p className="text-sm text-[#69736e] mt-3 leading-6">
+            <p className="text-sm sm:text-[15px] text-[#69736e] mt-3 leading-6">
               From hostel maintenance to academic support, send your
               request to the right place.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div
+            className="
+              grid
+              grid-cols-1
+              sm:grid-cols-2
+              lg:grid-cols-4
+              gap-4
+              sm:gap-5
+            "
+          >
             {problems.map((problem) => {
               const Icon = problem.icon;
 
@@ -958,17 +1240,19 @@ export default function LandingPage() {
                     border-[#d8d0c1]
                     rounded-2xl
                     p-5
+                    sm:p-6
+                    lg:p-5
                   "
                 >
-                  <div className="w-10 h-10 rounded-full bg-[#dce7df] flex items-center justify-center mb-4">
-                    <Icon className="w-4 h-4 text-[#286052]" />
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#dce7df] flex items-center justify-center mb-5">
+                    <Icon className="w-5 h-5 text-[#286052]" />
                   </div>
 
-                  <h3 className="premium-serif text-lg">
+                  <h3 className="premium-serif text-lg sm:text-xl">
                     {problem.title}
                   </h3>
 
-                  <p className="text-xs text-[#707872] leading-5 mt-2">
+                  <p className="text-xs sm:text-sm text-[#707872] leading-6 mt-3">
                     {problem.desc}
                   </p>
                 </motion.div>
@@ -989,32 +1273,52 @@ export default function LandingPage() {
           bg-[#06130f]
           text-[#F7F1E8]
           py-14
-          lg:py-16
+          sm:py-16
+          lg:py-20
           relative
           overflow-hidden
         "
       >
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_0%,rgba(42,107,92,0.18),transparent_45%)]" />
 
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
+        <div
+          className="
+            relative
+            max-w-7xl
+            mx-auto
+            px-5
+            sm:px-8
+            md:px-10
+            lg:px-14
+          "
+        >
           <div className="max-w-2xl mb-8">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-[#B58A4A]">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.25em] text-[#B58A4A]">
               How it works
             </span>
 
-            <h2 className="premium-serif text-3xl sm:text-4xl lg:text-5xl mt-2">
+            <h2 className="premium-serif text-[32px] sm:text-4xl lg:text-5xl mt-2 leading-tight">
               From request
               <span className="italic text-[#C9A66B]">
                 {" "}to resolution.
               </span>
             </h2>
 
-            <p className="text-sm text-[#aebdb5] mt-3 leading-6">
+            <p className="text-sm sm:text-[15px] text-[#aebdb5] mt-3 leading-6">
               A simple process that keeps students and campus teams connected.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div
+            className="
+              grid
+              grid-cols-1
+              sm:grid-cols-2
+              lg:grid-cols-4
+              gap-4
+              sm:gap-5
+            "
+          >
             {steps.map((step) => {
               const Icon = step.icon;
 
@@ -1049,15 +1353,15 @@ export default function LandingPage() {
                       {step.title}
                     </h3>
 
-                    <p className="text-xs text-[#b8c5bf] leading-6 mt-2">
+                    <p className="text-xs sm:text-sm text-[#b8c5bf] leading-6 mt-3">
                       {step.desc}
                     </p>
                   </div>
 
                   <div className="border-t border-[#35574f] pt-3 mt-4 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C9A66B]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C9A66B] shrink-0" />
 
-                    <span className="text-[9px] uppercase tracking-[0.15em] text-[#aebdb5]">
+                    <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.12em] sm:tracking-[0.15em] text-[#aebdb5]">
                       {step.previewBadge}
                     </span>
                   </div>
@@ -1070,8 +1374,6 @@ export default function LandingPage() {
 
       {/* =========================================================
           SERVICES
-          NEW BACKGROUND IMAGE
-          HALF DARK SHADE LIKE HERO
       ========================================================== */}
 
       <motion.section
@@ -1090,38 +1392,55 @@ export default function LandingPage() {
           backgroundPosition: "center",
         }}
       >
-        {/* LEFT DARK SHADE */}
-
         <div className="absolute inset-0 bg-gradient-to-r from-[#06130f] via-[#2B211Be8] via-[52%] to-[#21181366]" />
-
-        {/* Overall subtle shade */}
 
         <div className="absolute inset-0 bg-[#06130f]/25" />
 
-        {/* Gold glow */}
+        <div className="absolute right-[20%] top-0 w-[300px] sm:w-[450px] h-[300px] sm:h-[450px] bg-[#B58A4A]/10 blur-[100px] sm:blur-[120px] rounded-full pointer-events-none" />
 
-        <div className="absolute right-[20%] top-0 w-[450px] h-[450px] bg-[#B58A4A]/10 blur-[120px] rounded-full pointer-events-none" />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 py-14 lg:py-16">
+        <div
+          className="
+            relative
+            z-10
+            max-w-7xl
+            mx-auto
+            px-5
+            sm:px-8
+            md:px-10
+            lg:px-14
+            py-14
+            sm:py-16
+            lg:py-20
+          "
+        >
           <div className="max-w-2xl mb-8">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-[#B58A4A]">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.25em] text-[#B58A4A]">
               Services
             </span>
 
-            <h2 className="premium-serif text-3xl sm:text-4xl lg:text-5xl mt-2">
+            <h2 className="premium-serif text-[32px] sm:text-4xl lg:text-5xl mt-2 leading-tight">
               Everything your campus
               <span className="italic text-[#C9A66B]">
                 {" "}needs.
               </span>
             </h2>
 
-            <p className="text-sm text-[#d3d9d5] mt-3 leading-6 max-w-xl">
+            <p className="text-sm sm:text-[15px] text-[#d3d9d5] mt-3 leading-6 max-w-xl">
               One connected platform for everyday student requests,
               campus support and communication.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div
+            className="
+              grid
+              grid-cols-1
+              sm:grid-cols-2
+              lg:grid-cols-3
+              gap-4
+              sm:gap-5
+            "
+          >
             {services.map((service) => {
               const Icon = service.icon;
 
@@ -1140,6 +1459,8 @@ export default function LandingPage() {
                     border-[#5c685f]/50
                     rounded-2xl
                     p-5
+                    sm:p-6
+                    lg:p-5
                   "
                 >
                   <div className="w-10 h-10 rounded-full bg-[#B58A4A]/15 border border-[#B58A4A]/25 flex items-center justify-center mb-4">
@@ -1150,7 +1471,7 @@ export default function LandingPage() {
                     {service.name}
                   </h3>
 
-                  <p className="text-xs text-[#c5cec8] leading-6 mt-2">
+                  <p className="text-xs sm:text-sm text-[#c5cec8] leading-6 mt-3">
                     {service.desc}
                   </p>
                 </motion.div>
@@ -1171,16 +1492,17 @@ export default function LandingPage() {
           bg-[#0b1d18]
           text-[#F7F1E8]
           py-14
-          lg:py-16
+          sm:py-16
+          lg:py-20
         "
       >
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-5 sm:px-8">
           <div className="text-center mb-8">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-[#B58A4A]">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.25em] text-[#B58A4A]">
               Questions
             </span>
 
-            <h2 className="premium-serif text-3xl sm:text-4xl lg:text-5xl mt-2">
+            <h2 className="premium-serif text-[32px] sm:text-4xl lg:text-5xl mt-2 leading-tight">
               Frequently asked
               <span className="italic text-[#C9A66B]">
                 {" "}questions.
@@ -1212,15 +1534,16 @@ export default function LandingPage() {
                       flex
                       items-center
                       justify-between
-                      gap-5
-                      px-5
+                      gap-4
+                      px-4
+                      sm:px-5
                       py-4
                       text-left
                     "
                   >
-                    <span className="flex items-center gap-3 text-sm font-medium">
-                      <HelpCircle className="w-4 h-4 text-[#C9A66B]" />
-                      {faq.q}
+                    <span className="flex items-start gap-3 text-sm sm:text-[15px] font-medium min-w-0">
+                      <HelpCircle className="w-4 h-4 text-[#C9A66B] shrink-0 mt-0.5" />
+                      <span className="min-w-0">{faq.q}</span>
                     </span>
 
                     <ChevronDown
@@ -1229,6 +1552,7 @@ export default function LandingPage() {
                         h-4
                         text-[#87978f]
                         transition-transform
+                        shrink-0
                         ${isOpen ? "rotate-180" : ""}
                       `}
                     />
@@ -1250,7 +1574,7 @@ export default function LandingPage() {
                           opacity: 0,
                         }}
                       >
-                        <div className="px-5 pb-5 pt-1 text-xs text-[#aebdb5] leading-6 border-t border-[#6B4A35]">
+                        <div className="px-4 sm:px-5 pb-5 pt-1 text-xs sm:text-sm text-[#aebdb5] leading-6 border-t border-[#6B4A35]">
                           {faq.a}
                         </div>
                       </motion.div>
@@ -1274,15 +1598,16 @@ export default function LandingPage() {
           bg-[#06130f]
           overflow-hidden
           py-14
-          lg:py-16
+          sm:py-16
+          lg:py-20
         "
       >
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(42,107,92,0.18),transparent_50%)]" />
 
-        <div className="relative max-w-4xl mx-auto px-6 text-center">
+        <div className="relative max-w-4xl mx-auto px-5 sm:px-6 text-center">
           <Heart className="w-6 h-6 text-[#C9A66B] mx-auto mb-5" />
 
-          <h2 className="premium-serif text-3xl sm:text-4xl lg:text-5xl text-[#F7F1E8]">
+          <h2 className="premium-serif text-[32px] sm:text-4xl lg:text-5xl text-[#F7F1E8] leading-tight">
             Campus support,
             <br />
             <span className="italic text-[#C9A66B]">
@@ -1290,12 +1615,24 @@ export default function LandingPage() {
             </span>
           </h2>
 
-          <p className="max-w-xl mx-auto text-sm text-[#aebdb5] mt-4 leading-6">
+          <p className="max-w-xl mx-auto text-sm sm:text-[15px] text-[#aebdb5] mt-4 leading-6">
             Raise requests, stay informed and connect with the people
             responsible for helping you.
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-7">
+          <div
+            className="
+              flex
+              flex-col
+              sm:flex-row
+              justify-center
+              gap-3
+              mt-7
+              max-w-[420px]
+              sm:max-w-none
+              mx-auto
+            "
+          >
             <Link
               to="/register"
               className="
@@ -1304,20 +1641,24 @@ export default function LandingPage() {
                 justify-center
                 gap-3
                 px-7
-                py-3.5
+                py-4
+                min-h-[54px]
                 rounded-full
                 bg-[#C9A66B]
                 text-[#2B211B]
                 text-xs
                 font-bold
                 uppercase
-                tracking-[0.15em]
+                tracking-[0.12em]
+                sm:tracking-[0.15em]
                 hover:bg-[#D4B47A]
                 transition-colors
+                w-full
+                sm:w-auto
               "
             >
               Create Student Account
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 shrink-0" />
             </Link>
 
             <Link
@@ -1327,7 +1668,8 @@ export default function LandingPage() {
                 items-center
                 justify-center
                 px-7
-                py-3.5
+                py-4
+                min-h-[54px]
                 rounded-full
                 border
                 border-[#52675f]
@@ -1335,9 +1677,12 @@ export default function LandingPage() {
                 text-xs
                 font-bold
                 uppercase
-                tracking-[0.15em]
+                tracking-[0.12em]
+                sm:tracking-[0.15em]
                 hover:bg-white/10
                 transition-colors
+                w-full
+                sm:w-auto
               "
             >
               Sign In
@@ -1351,22 +1696,42 @@ export default function LandingPage() {
       ========================================================== */}
 
       <footer className="bg-[#040c09] border-t border-[#20372f] text-[#F7F1E8]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-14 py-10">
-          <div className="grid md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-8">
+        <div
+          className="
+            max-w-7xl
+            mx-auto
+            px-5
+            sm:px-8
+            md:px-10
+            lg:px-14
+            py-10
+            sm:py-12
+          "
+        >
+          <div
+            className="
+              grid
+              grid-cols-1
+              sm:grid-cols-2
+              lg:grid-cols-[1.5fr_1fr_1fr_1fr]
+              gap-9
+              lg:gap-8
+            "
+          >
             {/* BRAND */}
 
-            <div>
+            <div className="sm:col-span-2 lg:col-span-1">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[#B58A4A] flex items-center justify-center">
+                <div className="w-9 h-9 rounded-xl bg-[#B58A4A] flex items-center justify-center shrink-0">
                   <ShieldCheck className="w-5 h-5 text-[#2B211B]" />
                 </div>
 
-                <div>
+                <div className="min-w-0">
                   <h3 className="premium-serif text-xl">
                     Student HelpDesk
                   </h3>
 
-                  <p className="text-[9px] uppercase tracking-[0.2em] text-[#7e9188] mt-0.5">
+                  <p className="text-[8px] sm:text-[9px] uppercase tracking-[0.16em] sm:tracking-[0.2em] text-[#7e9188] mt-0.5">
                     Campus support made simple
                   </p>
                 </div>
@@ -1381,8 +1746,8 @@ export default function LandingPage() {
                 <a
                   href="#"
                   className="
-                    w-8
-                    h-8
+                    w-9
+                    h-9
                     rounded-full
                     border
                     border-[#30473f]
@@ -1402,8 +1767,8 @@ export default function LandingPage() {
                 <a
                   href="mailto:support@studenthelpdesk.com"
                   className="
-                    w-8
-                    h-8
+                    w-9
+                    h-9
                     rounded-full
                     border
                     border-[#30473f]
@@ -1514,10 +1879,10 @@ export default function LandingPage() {
                   </span>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-[#C9A66B] shrink-0" />
+                <div className="flex items-start gap-3">
+                  <Mail className="w-4 h-4 text-[#C9A66B] mt-0.5 shrink-0" />
 
-                  <span className="text-xs text-[#9eaaa5]">
+                  <span className="text-xs text-[#9eaaa5] leading-5 break-all">
                     support@studenthelpdesk.com
                   </span>
                 </div>
@@ -1535,8 +1900,21 @@ export default function LandingPage() {
 
           {/* FOOTER BOTTOM */}
 
-          <div className="border-t border-[#20372f] mt-8 pt-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-[10px] text-[#687b73]">
+          <div
+            className="
+              border-t
+              border-[#20372f]
+              mt-8
+              pt-5
+              flex
+              flex-col
+              sm:flex-row
+              items-center
+              justify-between
+              gap-4
+            "
+          >
+            <p className="text-[10px] text-[#687b73] text-center sm:text-left">
               © {new Date().getFullYear()} Student HelpDesk. All rights reserved.
             </p>
 
@@ -1568,3 +1946,4 @@ export default function LandingPage() {
     </div>
   );
 }
+

@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   Clock3,
 } from 'lucide-react';
+
 import { outpassService } from '../../services/outpassService';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
@@ -37,10 +38,17 @@ export default function CreateOutpass() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
     if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: null }));
+      setErrors((prev) => ({
+        ...prev,
+        [name]: null,
+      }));
     }
   };
 
@@ -83,7 +91,7 @@ export default function CreateOutpass() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-dark text-brand-cream">
+    <div className="min-h-screen bg-[#F3E8D7] text-brand-dark">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
 
         {/* =========================================================
@@ -92,7 +100,7 @@ export default function CreateOutpass() {
         <div className="mb-8">
           <Link
             to="/outpasses"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-brand-muted hover:text-brand-cream transition-colors mb-5"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-[#6F5A4A] hover:text-[#3A2A20] transition-colors mb-5"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Outpasses</span>
@@ -101,27 +109,27 @@ export default function CreateOutpass() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div>
               <div className="inline-flex items-center gap-2 mb-3">
-                <div className="w-7 h-7 rounded-lg bg-brand-brown/20 border border-brand-brown-border flex items-center justify-center">
-                  <FileText className="w-3.5 h-3.5 text-brand-gold" />
+                <div className="w-7 h-7 rounded-lg bg-[#6B4A35]/20 border border-[#6B4A35]/40 flex items-center justify-center">
+                  <FileText className="w-3.5 h-3.5 text-[#8B6337]" />
                 </div>
 
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand-gold">
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8B6337]">
                   Student HelpDesk
                 </span>
               </div>
 
-              <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-brand-cream">
+              <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-[#2B211B]">
                 Apply for Outpass
               </h1>
 
-              <p className="mt-2 text-sm text-brand-muted max-w-xl">
+              <p className="mt-2 text-sm text-[#6F5A4A] max-w-xl">
                 Submit your travel details for hostel verification.
               </p>
             </div>
 
             {/* Secure application badge */}
-            <div className="inline-flex self-start lg:self-auto items-center gap-2 px-4 py-2.5 rounded-xl border border-brand-brown-border bg-brand-brown-dark/50 text-[11px] font-bold uppercase tracking-wide text-brand-biscuit">
-              <ShieldCheck className="w-4 h-4 text-brand-brown-soft" />
+            <div className="inline-flex self-start lg:self-auto items-center gap-2 px-4 py-2.5 rounded-xl border border-[#6B4A35] bg-[#3A2A20] text-[11px] font-bold uppercase tracking-wide text-[#F0DFC6]">
+              <ShieldCheck className="w-4 h-4 text-[#C9A66B]" />
               <span>Secure Application</span>
             </div>
           </div>
@@ -130,18 +138,18 @@ export default function CreateOutpass() {
         {/* =========================================================
             SAFETY POLICY
         ========================================================== */}
-        <div className="mb-7 rounded-2xl border border-brand-brown/60 bg-brand-brown-dark/80 p-4 sm:p-5">
+        <div className="mb-7 rounded-2xl border border-[#6B4A35] bg-[#3A2A20] p-4 sm:p-5">
           <div className="flex items-start gap-3.5">
-            <div className="w-10 h-10 shrink-0 rounded-xl bg-brand-brown/40 border border-brand-brown flex items-center justify-center">
-              <ShieldCheck className="w-5 h-5 text-brand-biscuit" />
+            <div className="w-10 h-10 shrink-0 rounded-xl bg-[#6B4A35]/40 border border-[#6B4A35] flex items-center justify-center">
+              <ShieldCheck className="w-5 h-5 text-[#F0DFC6]" />
             </div>
 
             <div>
-              <h3 className="text-sm font-bold text-brand-cream mb-1">
+              <h3 className="text-sm font-bold text-[#F4EFE5] mb-1">
                 Residential Safety Policy
               </h3>
 
-              <p className="text-xs sm:text-sm leading-relaxed text-brand-muted">
+              <p className="text-xs sm:text-sm leading-relaxed text-[#C9BDB3]">
                 All outpass requests require direct phone confirmation with
                 your registered parent/guardian by the hostel warden before
                 gate departure authorization is granted.
@@ -155,23 +163,23 @@ export default function CreateOutpass() {
         ========================================================== */}
         <form
           onSubmit={handleSubmit}
-          className="rounded-3xl overflow-hidden border border-brand-brown-border bg-brand-brown-dark shadow-card-soft"
+          className="rounded-3xl overflow-hidden border border-[#6B4A35] bg-[#3A2A20] shadow-card-soft"
         >
           {/* Application header */}
-          <div className="px-5 sm:px-7 py-5 border-b border-brand-brown-border bg-[#3A2A20]">
+          <div className="px-5 sm:px-7 py-5 border-b border-[#6B4A35] bg-[#3A2A20]">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <h2 className="font-heading text-lg font-bold text-brand-cream">
+                <h2 className="font-heading text-lg font-bold text-[#F4EFE5]">
                   Outpass Application
                 </h2>
 
-                <p className="text-xs text-brand-muted mt-1">
+                <p className="text-xs text-[#C9BDB3] mt-1">
                   Fill in the details below to continue.
                 </p>
               </div>
 
-              <div className="w-11 h-11 rounded-xl bg-brand-brown/30 border border-brand-brown-border flex items-center justify-center shrink-0">
-                <FileText className="w-5 h-5 text-brand-biscuit" />
+              <div className="w-11 h-11 rounded-xl bg-[#6B4A35]/30 border border-[#6B4A35] flex items-center justify-center shrink-0">
+                <FileText className="w-5 h-5 text-[#F0DFC6]" />
               </div>
             </div>
           </div>
@@ -187,17 +195,18 @@ export default function CreateOutpass() {
           {/* =======================================================
               TRAVEL ITINERARY
           ======================================================== */}
-          <section className="px-5 sm:px-7 py-7 border-b border-brand-brown-border">
+          <section className="px-5 sm:px-7 py-7 border-b border-[#6B4A35]">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-9 h-9 rounded-xl bg-brand-brown/40 border border-brand-brown-border flex items-center justify-center">
-                <MapPin className="w-4 h-4 text-brand-biscuit" />
+              <div className="w-9 h-9 rounded-xl bg-[#6B4A35]/40 border border-[#6B4A35] flex items-center justify-center">
+                <MapPin className="w-4 h-4 text-[#F0DFC6]" />
               </div>
 
               <div>
-                <h3 className="text-sm font-bold text-brand-cream">
+                <h3 className="text-sm font-bold text-[#F4EFE5]">
                   Travel Itinerary
                 </h3>
-                <p className="text-[11px] text-brand-muted mt-0.5">
+
+                <p className="text-[11px] text-[#C9BDB3] mt-0.5">
                   Where and when are you travelling?
                 </p>
               </div>
@@ -207,12 +216,12 @@ export default function CreateOutpass() {
 
               {/* Destination */}
               <div>
-                <label className="block text-xs font-bold text-brand-biscuit mb-2">
+                <label className="block text-xs font-bold text-[#F0DFC6] mb-2">
                   Destination City / Address *
                 </label>
 
                 <div className="relative">
-                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-brown-soft pointer-events-none" />
+                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A66B] pointer-events-none" />
 
                   <input
                     type="text"
@@ -220,7 +229,7 @@ export default function CreateOutpass() {
                     value={formData.destination}
                     onChange={handleChange}
                     placeholder="e.g. Bangalore (Home) or NIE Campus, Mysore"
-                    className="w-full pl-11 pr-4 py-3.5 text-sm rounded-xl border border-brand-brown-border bg-brand-dark/70 text-brand-cream placeholder:text-[#A58F79] outline-none transition-all focus:border-brand-brown-soft focus:ring-2 focus:ring-brand-brown/30"
+                    className="w-full pl-11 pr-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
                     required
                   />
                 </div>
@@ -234,7 +243,7 @@ export default function CreateOutpass() {
 
               {/* Reason */}
               <div>
-                <label className="block text-xs font-bold text-brand-biscuit mb-2">
+                <label className="block text-xs font-bold text-[#F0DFC6] mb-2">
                   Purpose / Reason for Travel *
                 </label>
 
@@ -244,7 +253,7 @@ export default function CreateOutpass() {
                   value={formData.reason}
                   onChange={handleChange}
                   placeholder="Detail the family function, competition, medical appointment, or personal reason..."
-                  className="w-full px-4 py-3.5 text-sm rounded-xl border border-brand-brown-border bg-brand-dark/70 text-brand-cream placeholder:text-[#A58F79] outline-none transition-all resize-none focus:border-brand-brown-soft focus:ring-2 focus:ring-brand-brown/30 leading-relaxed"
+                  className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all resize-none focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40 leading-relaxed"
                   required
                 />
 
@@ -260,8 +269,8 @@ export default function CreateOutpass() {
 
                 {/* Departure */}
                 <div>
-                  <label className="flex items-center gap-1.5 text-xs font-bold text-brand-biscuit mb-2">
-                    <Calendar className="w-3.5 h-3.5 text-brand-brown-soft" />
+                  <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
+                    <Calendar className="w-3.5 h-3.5 text-[#C9A66B]" />
                     Departure Date & Time *
                   </label>
 
@@ -270,7 +279,7 @@ export default function CreateOutpass() {
                     name="from_date"
                     value={formData.from_date}
                     onChange={handleChange}
-                    className="w-full px-4 py-3.5 text-sm rounded-xl border border-brand-brown-border bg-brand-dark/70 text-brand-cream outline-none transition-all focus:border-brand-brown-soft focus:ring-2 focus:ring-brand-brown/30 [color-scheme:dark]"
+                    className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40 [color-scheme:dark]"
                     required
                   />
 
@@ -283,8 +292,8 @@ export default function CreateOutpass() {
 
                 {/* Return */}
                 <div>
-                  <label className="flex items-center gap-1.5 text-xs font-bold text-brand-biscuit mb-2">
-                    <Clock3 className="w-3.5 h-3.5 text-brand-brown-soft" />
+                  <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
+                    <Clock3 className="w-3.5 h-3.5 text-[#C9A66B]" />
                     Expected Return Date & Time *
                   </label>
 
@@ -293,7 +302,7 @@ export default function CreateOutpass() {
                     name="to_date"
                     value={formData.to_date}
                     onChange={handleChange}
-                    className="w-full px-4 py-3.5 text-sm rounded-xl border border-brand-brown-border bg-brand-dark/70 text-brand-cream outline-none transition-all focus:border-brand-brown-soft focus:ring-2 focus:ring-brand-brown/30 [color-scheme:dark]"
+                    className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40 [color-scheme:dark]"
                     required
                   />
 
@@ -303,6 +312,7 @@ export default function CreateOutpass() {
                     </p>
                   )}
                 </div>
+
               </div>
             </div>
           </section>
@@ -310,18 +320,18 @@ export default function CreateOutpass() {
           {/* =======================================================
               GUARDIAN DETAILS
           ======================================================== */}
-          <section className="px-5 sm:px-7 py-7 border-b border-brand-brown-border">
+          <section className="px-5 sm:px-7 py-7 border-b border-[#6B4A35]">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-9 h-9 rounded-xl bg-brand-brown/40 border border-brand-brown-border flex items-center justify-center">
-                <ShieldCheck className="w-4 h-4 text-brand-biscuit" />
+              <div className="w-9 h-9 rounded-xl bg-[#6B4A35]/40 border border-[#6B4A35] flex items-center justify-center">
+                <ShieldCheck className="w-4 h-4 text-[#F0DFC6]" />
               </div>
 
               <div>
-                <h3 className="text-sm font-bold text-brand-cream">
+                <h3 className="text-sm font-bold text-[#F4EFE5]">
                   Guardian & Verification Details
                 </h3>
 
-                <p className="text-[11px] text-brand-muted mt-0.5">
+                <p className="text-[11px] text-[#C9BDB3] mt-0.5">
                   Contact details used for verification.
                 </p>
               </div>
@@ -331,8 +341,8 @@ export default function CreateOutpass() {
 
               {/* Parent name */}
               <div>
-                <label className="flex items-center gap-1.5 text-xs font-bold text-brand-biscuit mb-2">
-                  <User className="w-3.5 h-3.5 text-brand-brown-soft" />
+                <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
+                  <User className="w-3.5 h-3.5 text-[#C9A66B]" />
                   Parent / Guardian Name *
                 </label>
 
@@ -342,7 +352,7 @@ export default function CreateOutpass() {
                   value={formData.parent_name}
                   onChange={handleChange}
                   placeholder="Full name of guardian"
-                  className="w-full px-4 py-3.5 text-sm rounded-xl border border-brand-brown-border bg-brand-dark/70 text-brand-cream placeholder:text-[#A58F79] outline-none transition-all focus:border-brand-brown-soft focus:ring-2 focus:ring-brand-brown/30"
+                  className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
                   required
                 />
 
@@ -355,8 +365,8 @@ export default function CreateOutpass() {
 
               {/* Parent contact */}
               <div>
-                <label className="flex items-center gap-1.5 text-xs font-bold text-brand-biscuit mb-2">
-                  <Phone className="w-3.5 h-3.5 text-brand-brown-soft" />
+                <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
+                  <Phone className="w-3.5 h-3.5 text-[#C9A66B]" />
                   Parent Contact Number *
                 </label>
 
@@ -366,7 +376,7 @@ export default function CreateOutpass() {
                   value={formData.parent_contact}
                   onChange={handleChange}
                   placeholder="+91 94488 77665"
-                  className="w-full px-4 py-3.5 text-sm rounded-xl border border-brand-brown-border bg-brand-dark/70 text-brand-cream placeholder:text-[#A58F79] outline-none transition-all focus:border-brand-brown-soft focus:ring-2 focus:ring-brand-brown/30"
+                  className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
                   required
                 />
 
@@ -379,8 +389,8 @@ export default function CreateOutpass() {
 
               {/* Emergency contact */}
               <div className="md:col-span-2">
-                <label className="flex items-center gap-1.5 text-xs font-bold text-brand-biscuit mb-2">
-                  <Phone className="w-3.5 h-3.5 text-brand-brown-soft" />
+                <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
+                  <Phone className="w-3.5 h-3.5 text-[#C9A66B]" />
                   Student Emergency Contact Number *
                 </label>
 
@@ -390,7 +400,7 @@ export default function CreateOutpass() {
                   value={formData.emergency_contact}
                   onChange={handleChange}
                   placeholder="Active student phone number while traveling"
-                  className="w-full px-4 py-3.5 text-sm rounded-xl border border-brand-brown-border bg-brand-dark/70 text-brand-cream placeholder:text-[#A58F79] outline-none transition-all focus:border-brand-brown-soft focus:ring-2 focus:ring-brand-brown/30"
+                  className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
                   required
                 />
 
@@ -400,6 +410,7 @@ export default function CreateOutpass() {
                   </p>
                 )}
               </div>
+
             </div>
           </section>
 
@@ -407,10 +418,11 @@ export default function CreateOutpass() {
               ADDITIONAL NOTES
           ======================================================== */}
           <section className="px-5 sm:px-7 py-7">
-            <label className="flex items-center gap-1.5 text-xs font-bold text-brand-biscuit mb-2">
-              <FileText className="w-3.5 h-3.5 text-brand-brown-soft" />
+            <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
+              <FileText className="w-3.5 h-3.5 text-[#C9A66B]" />
               Additional Travel Notes
-              <span className="font-medium text-brand-muted">
+
+              <span className="font-medium text-[#C9BDB3]">
                 (Optional)
               </span>
             </label>
@@ -421,18 +433,21 @@ export default function CreateOutpass() {
               value={formData.notes}
               onChange={handleChange}
               placeholder="e.g. Traveling via KSRTC bus, Ticket PNR #1029482, Accompanied by roommate"
-              className="w-full px-4 py-3.5 text-sm rounded-xl border border-brand-brown-border bg-brand-dark/70 text-brand-cream placeholder:text-[#A58F79] outline-none transition-all focus:border-brand-brown-soft focus:ring-2 focus:ring-brand-brown/30"
+              className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
             />
           </section>
 
           {/* =======================================================
               SUBMIT AREA
           ======================================================== */}
-          <div className="px-5 sm:px-7 py-5 bg-[#3A2A20] border-t border-brand-brown-border">
+          <div className="px-5 sm:px-7 py-5 bg-[#3A2A20] border-t border-[#6B4A35]">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-[11px] text-brand-muted">
-                <ShieldCheck className="w-4 h-4 text-brand-brown-soft" />
-                <span>Your request will be sent for guardian verification.</span>
+
+              <div className="flex items-center gap-2 text-[11px] text-[#C9BDB3]">
+                <ShieldCheck className="w-4 h-4 text-[#C9A66B]" />
+                <span>
+                  Your request will be sent for guardian verification.
+                </span>
               </div>
 
               <button
@@ -449,15 +464,19 @@ export default function CreateOutpass() {
                   </>
                 )}
               </button>
+
             </div>
           </div>
         </form>
 
-        {/* Bottom spacing / helper */}
-        <div className="flex items-center justify-center gap-2 mt-5 text-[10px] uppercase tracking-wider text-brand-muted">
+        {/* =========================================================
+            BOTTOM HELPER
+        ========================================================== */}
+        <div className="flex items-center justify-center gap-2 mt-5 text-[10px] uppercase tracking-wider text-[#6F5A4A]">
           <ShieldCheck className="w-3.5 h-3.5" />
           <span>Student HelpDesk • Secure Campus Request</span>
         </div>
+
       </div>
     </div>
   );

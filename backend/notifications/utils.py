@@ -24,6 +24,7 @@ def create_notification(
     title,
     message,
     notification_type='INFO',
+    reference_id=None,
     reference_url=''
 ):
     if not recipient:
@@ -40,5 +41,6 @@ def create_notification(
         title=title,
         message=message,
         notification_type=notification_type,
+        reference_id=reference_id,
         reference_url=reference_url
     )
