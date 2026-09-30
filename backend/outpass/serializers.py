@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Outpass
 
+
 class OutpassSerializer(serializers.ModelSerializer):
     student_name = serializers.SerializerMethodField()
     student_roll = serializers.SerializerMethodField()
@@ -18,7 +19,18 @@ class OutpassSerializer(serializers.ModelSerializer):
             'notes', 'status', 'verification_status', 'verification_notes',
             'reviewed_by', 'reviewer_name', 'reviewer_remarks', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'student', 'status', 'verification_status', 'verification_notes', 'reviewed_by', 'reviewer_remarks', 'created_at', 'updated_at']
+
+        read_only_fields = [
+            'id',
+            'student',
+            'status',
+            'verification_status',
+            'verification_notes',
+            'reviewed_by',
+            'reviewer_remarks',
+            'created_at',
+            'updated_at'
+        ]
 
     def get_student_name(self, obj):
         return obj.student.get_full_name() or obj.student.username
@@ -51,22 +63,85 @@ class OutpassCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Outpass
         fields = [
-            'destination', 'reason', 'from_date', 'to_date',
-            'parent_name', 'parent_contact', 'emergency_contact', 'notes'
+            'destination',
+            'reason',
+            'from_date',
+            'to_date',
+            'parent_name',
+            'parent_contact',
+            'emergency_contact',
+            'notes'
         ]
+
+        extra_kwargs = {
+            'parent_name': {
+                'required': False,
+                'allow_blank': True
+            },
+            'parent_contact': {
+                'required': False,
+                'allow_blank': True
+            }
+        }
 
     def validate(self, data):
         if data.get('from_date') and data.get('to_date'):
             if data['from_date'] >= data['to_date']:
-                raise serializers.ValidationError({"to_date": "Return date must be after departure date."})
+                raise serializers.ValidationError({
+                    "to_date": "Return date must be after departure date."
+                })
+
+        request = self.context.get('request')
+        user = request.user if request else None
+
+        if not user or not user.is_authenticated:
+            raise serializers.ValidationError({
+                "detail": "Authentication is required."
+            })
+
+        try:
+            profile = user.student_profile
+        except Exception:
+            raise serializers.ValidationError({
+                "parent_contact": "Student profile was not found."
+            })
+
+        guardian_phone = profile.guardian_phone.strip()
+
+        if not guardian_phone:
+            raise serializers.ValidationError({
+                "parent_contact": (
+                    "No registered guardian phone number was found. "
+                    "Please contact the administrator."
+                )
+            })
+
+        # Always use the registered guardian details
+        data['parent_contact'] = guardian_phone
+
+        if profile.guardian_name:
+            data['parent_name'] = profile.guardian_name
+
         return data
 
 
 class OutpassVerifyParentSerializer(serializers.Serializer):
-    verification_status = serializers.ChoiceField(choices=['Verified', 'Failed', 'Pending'])
-    verification_notes = serializers.CharField(required=False, allow_blank=True)
+    verification_status = serializers.ChoiceField(
+        choices=['Verified', 'Failed']
+    )
+
+    verification_notes = serializers.CharField(
+        required=False,
+        allow_blank=True
+    )
 
 
 class OutpassReviewSerializer(serializers.Serializer):
-    status = serializers.ChoiceField(choices=['Approved', 'Rejected'])
-    reviewer_remarks = serializers.CharField(required=False, allow_blank=True)
+    status = serializers.ChoiceField(
+        choices=['Approved', 'Rejected']
+    )
+
+    reviewer_remarks = serializers.CharField(
+        required=False,
+        allow_blank=True
+    )

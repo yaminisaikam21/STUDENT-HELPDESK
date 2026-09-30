@@ -3,15 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   UserPlus,
-  Lock,
   User,
-  Mail,
   Phone,
-  BookOpen,
-  Building2,
-  Hash,
+  CheckCircle2,
   AlertCircle,
-  CheckCircle2
+  ShieldCheck,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -30,6 +26,10 @@ export default function Register() {
     department: '',
     hostel: '',
     room_number: '',
+
+    // Parent / Guardian details
+    guardian_name: '',
+    guardian_phone: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -66,6 +66,20 @@ export default function Register() {
       return;
     }
 
+    if (!formData.guardian_name.trim()) {
+      setErrors({
+        guardian_name: ['Parent / Guardian name is required.'],
+      });
+      return;
+    }
+
+    if (!formData.guardian_phone.trim()) {
+      setErrors({
+        guardian_phone: ['Parent / Guardian phone number is required.'],
+      });
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -78,6 +92,8 @@ export default function Register() {
 
       navigate('/student', { replace: true });
     } catch (err) {
+      console.error('Registration error:', err);
+
       if (err.response?.data) {
         setErrors(err.response.data);
       } else {
@@ -87,7 +103,7 @@ export default function Register() {
       }
 
       addToast(
-        'Registration could not be completed. Check errors.',
+        'Registration could not be completed. Check the errors.',
         'error'
       );
     } finally {
@@ -103,7 +119,7 @@ export default function Register() {
         transition={{ duration: 0.4 }}
         className="max-w-2xl w-full space-y-6"
       >
-        {/* Back to home */}
+        {/* Back to Home */}
 
         <div className="mb-5 flex justify-start">
           <Link
@@ -114,7 +130,7 @@ export default function Register() {
           </Link>
         </div>
 
-        {/* Logo and heading */}
+        {/* Header */}
 
         <div className="text-center space-y-2">
           <div className="flex justify-center">
@@ -126,12 +142,12 @@ export default function Register() {
           </h2>
 
           <p className="text-xs sm:text-sm text-[#8B684D]">
-            Create your official campus service profile to raise tickets and
-            apply for outpasses
+            Create your official campus service profile to raise
+            tickets and apply for outpasses
           </p>
         </div>
 
-        {/* Registration information */}
+        {/* Registration Information */}
 
         <div className="p-3.5 rounded-2xl bg-[#33251D] border border-[#6B4A35] text-xs text-[#E7D8C5] flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 shrink-0 text-[#C9A66B]" />
@@ -141,28 +157,34 @@ export default function Register() {
             <strong className="text-[#F7F1E8]">
               Student accounts
             </strong>
-            . Warden and Admin accounts are provisioned securely by Campus
-            Authorities.
+            . Warden and Admin accounts are provisioned securely
+            by Campus Authorities.
           </span>
         </div>
 
-        {/* Registration form */}
+        {/* Form */}
 
         <form
           onSubmit={handleSubmit}
           className="p-8 rounded-3xl bg-[#3A2A20] border border-[#6B4A35] shadow-2xl space-y-5"
         >
-          {/* General errors */}
+          {/* General Errors */}
 
           {errors.non_field_errors && (
             <div className="p-3.5 rounded-xl bg-rose-950/40 border border-rose-800/60 text-rose-300 text-xs flex items-start gap-2">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-400" />
 
-              <span>{errors.non_field_errors[0]}</span>
+              <span>
+                {Array.isArray(errors.non_field_errors)
+                  ? errors.non_field_errors[0]
+                  : errors.non_field_errors}
+              </span>
             </div>
           )}
 
-          {/* Account & Credentials */}
+          {/* =====================================================
+              ACCOUNT & CREDENTIALS
+          ===================================================== */}
 
           <div className="border-b border-[#6B4A35] pb-4">
             <h3 className="text-xs font-bold uppercase tracking-wider text-[#C9A66B] mb-3">
@@ -170,6 +192,7 @@ export default function Register() {
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
               {/* Username */}
 
               <div>
@@ -189,7 +212,9 @@ export default function Register() {
 
                 {errors.username && (
                   <p className="text-[11px] text-rose-400 mt-1">
-                    {errors.username[0]}
+                    {Array.isArray(errors.username)
+                      ? errors.username[0]
+                      : errors.username}
                   </p>
                 )}
               </div>
@@ -213,7 +238,9 @@ export default function Register() {
 
                 {errors.email && (
                   <p className="text-[11px] text-rose-400 mt-1">
-                    {errors.email[0]}
+                    {Array.isArray(errors.email)
+                      ? errors.email[0]
+                      : errors.email}
                   </p>
                 )}
               </div>
@@ -272,7 +299,9 @@ export default function Register() {
 
                 {errors.password && (
                   <p className="text-[11px] text-rose-400 mt-1">
-                    {errors.password[0]}
+                    {Array.isArray(errors.password)
+                      ? errors.password[0]
+                      : errors.password}
                   </p>
                 )}
               </div>
@@ -296,14 +325,19 @@ export default function Register() {
 
                 {errors.confirm_password && (
                   <p className="text-[11px] text-rose-400 mt-1">
-                    {errors.confirm_password[0]}
+                    {Array.isArray(errors.confirm_password)
+                      ? errors.confirm_password[0]
+                      : errors.confirm_password}
                   </p>
                 )}
               </div>
+
             </div>
           </div>
 
-          {/* Student & Hostel Details */}
+          {/* =====================================================
+              STUDENT & HOSTEL DETAILS
+          ===================================================== */}
 
           <div className="pt-2">
             <h3 className="text-xs font-bold uppercase tracking-wider text-[#C9A66B] mb-3">
@@ -311,6 +345,7 @@ export default function Register() {
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
               {/* Roll Number */}
 
               <div>
@@ -327,9 +362,17 @@ export default function Register() {
                   className="w-full px-3.5 py-2 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F7F1E8] placeholder-[#A58F79] focus:ring-2 focus:ring-[#C9A66B] outline-none uppercase font-mono transition-all"
                   required
                 />
+
+                {errors.roll_number && (
+                  <p className="text-[11px] text-rose-400 mt-1">
+                    {Array.isArray(errors.roll_number)
+                      ? errors.roll_number[0]
+                      : errors.roll_number}
+                  </p>
+                )}
               </div>
 
-              {/* Phone */}
+              {/* Student Phone */}
 
               <div>
                 <label className="block text-xs font-semibold text-[#E7D8C5] mb-1">
@@ -337,7 +380,7 @@ export default function Register() {
                 </label>
 
                 <input
-                  type="text"
+                  type="tel"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
@@ -345,6 +388,14 @@ export default function Register() {
                   className="w-full px-3.5 py-2 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F7F1E8] placeholder-[#A58F79] focus:ring-2 focus:ring-[#C9A66B] outline-none transition-all"
                   required
                 />
+
+                {errors.phone && (
+                  <p className="text-[11px] text-rose-400 mt-1">
+                    {Array.isArray(errors.phone)
+                      ? errors.phone[0]
+                      : errors.phone}
+                  </p>
+                )}
               </div>
 
               {/* Department */}
@@ -397,10 +448,117 @@ export default function Register() {
                   className="w-full px-3.5 py-2 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F7F1E8] placeholder-[#A58F79] focus:ring-2 focus:ring-[#C9A66B] outline-none transition-all"
                 />
               </div>
+
             </div>
           </div>
 
-          {/* Register Button */}
+          {/* =====================================================
+              PARENT / GUARDIAN DETAILS
+          ===================================================== */}
+
+          <div className="pt-4 border-t border-[#6B4A35]">
+
+            <div className="flex items-center gap-2 mb-1">
+
+              <ShieldCheck className="w-4 h-4 text-[#C9A66B]" />
+
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#C9A66B]">
+                Parent / Guardian Details
+              </h3>
+
+            </div>
+
+            <p className="text-[11px] text-[#B89B7A] mb-4">
+              Enter the parent or guardian details used for official
+              outpass verification.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+              {/* Guardian Name */}
+
+              <div>
+
+                <label className="block text-xs font-semibold text-[#E7D8C5] mb-1">
+                  Parent / Guardian Name *
+                </label>
+
+                <div className="relative">
+
+                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A66B]" />
+
+                  <input
+                    type="text"
+                    name="guardian_name"
+                    value={formData.guardian_name}
+                    onChange={handleChange}
+                    placeholder="e.g. Ramesh Kumar"
+                    className="w-full pl-10 pr-3.5 py-2 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F7F1E8] placeholder-[#A58F79] focus:ring-2 focus:ring-[#C9A66B] outline-none transition-all"
+                    required
+                  />
+
+                </div>
+
+                {errors.guardian_name && (
+                  <p className="text-[11px] text-rose-400 mt-1">
+                    {Array.isArray(errors.guardian_name)
+                      ? errors.guardian_name[0]
+                      : errors.guardian_name}
+                  </p>
+                )}
+
+              </div>
+
+              {/* Guardian Phone */}
+
+              <div>
+
+                <label className="block text-xs font-semibold text-[#E7D8C5] mb-1">
+                  Parent / Guardian Phone *
+                </label>
+
+                <div className="relative">
+
+                  <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A66B]" />
+
+                  <input
+                    type="tel"
+                    name="guardian_phone"
+                    value={formData.guardian_phone}
+                    onChange={handleChange}
+                    placeholder="+91 98765 43210"
+                    className="w-full pl-10 pr-3.5 py-2 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F7F1E8] placeholder-[#A58F79] focus:ring-2 focus:ring-[#C9A66B] outline-none transition-all"
+                    required
+                  />
+
+                </div>
+
+                {errors.guardian_phone && (
+                  <p className="text-[11px] text-rose-400 mt-1">
+                    {Array.isArray(errors.guardian_phone)
+                      ? errors.guardian_phone[0]
+                      : errors.guardian_phone}
+                  </p>
+                )}
+
+              </div>
+
+            </div>
+
+            <div className="mt-4 p-3 rounded-xl bg-[#241B16] border border-[#6B4A35] flex items-start gap-2">
+
+              <ShieldCheck className="w-4 h-4 text-[#C9A66B] mt-0.5 shrink-0" />
+
+              <p className="text-[11px] text-[#B89B7A] leading-relaxed">
+                The registered parent / guardian contact will be
+                used for outpass verification.
+              </p>
+
+            </div>
+
+          </div>
+
+          {/* Submit */}
 
           <button
             type="submit"
@@ -412,15 +570,17 @@ export default function Register() {
             ) : (
               <>
                 <UserPlus className="w-4 h-4" />
-
-                <span>Complete Student Registration</span>
+                <span>
+                  Complete Student Registration
+                </span>
               </>
             )}
           </button>
 
-          {/* Login Link */}
+          {/* Login */}
 
           <div className="text-center pt-2">
+
             <span className="text-xs text-[#B89B7A]">
               Already registered?{' '}
 
@@ -431,7 +591,9 @@ export default function Register() {
                 Sign in here
               </Link>
             </span>
+
           </div>
+
         </form>
       </motion.div>
     </div>

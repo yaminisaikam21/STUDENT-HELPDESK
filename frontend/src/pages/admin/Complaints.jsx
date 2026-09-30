@@ -433,7 +433,7 @@ export default function AdminComplaints() {
                   onClick={() =>
                     openUpdateModal(item)
                   }
-                  className="px-4 py-2 rounded-xl bg-brand-teal hover:bg-brand-teal-dark text-white text-xs font-semibold shadow-xs transition-colors"
+                  className="px-4 py-2 rounded-xl bg-brown-600 hover:bg-brown-700 text-white text-xs font-semibold shadow-sm transition-colors"
                 >
                   Triage / Assign
                 </button>
@@ -601,7 +601,7 @@ export default function AdminComplaints() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl bg-brand-teal hover:bg-brand-teal-dark text-white text-xs font-bold shadow-xs transition-colors disabled:opacity-60"
+                  className="px-5 py-2 rounded-xl bg-brown-600 hover:bg-brown-700 text-white text-xs font-bold shadow-xs transition-colors disabled:opacity-60"
                 >
                   {saving
                     ? 'Saving...'

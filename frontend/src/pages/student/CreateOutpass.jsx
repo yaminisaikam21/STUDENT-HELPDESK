@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+
 import {
   ArrowLeft,
   Send,
   MapPin,
   Calendar,
   Phone,
+  PhoneCall,
   User,
   FileText,
   AlertCircle,
@@ -29,7 +31,7 @@ export default function CreateOutpass() {
     to_date: '',
     parent_name: user?.student_profile?.guardian_name || '',
     parent_contact: user?.student_profile?.guardian_phone || '',
-    emergency_contact: user?.phone || '',
+    emergency_contact: '',
     notes: '',
   });
 
@@ -56,10 +58,16 @@ export default function CreateOutpass() {
     e.preventDefault();
     setErrors({});
 
-    // Basic date validation
     if (new Date(formData.from_date) >= new Date(formData.to_date)) {
       setErrors({
         to_date: ['Return date must be strictly after departure date.'],
+      });
+      return;
+    }
+
+    if (!formData.emergency_contact.trim()) {
+      setErrors({
+        emergency_contact: ['Emergency contact number is required.'],
       });
       return;
     }
@@ -94,9 +102,7 @@ export default function CreateOutpass() {
     <div className="min-h-screen bg-[#F3E8D7] text-brand-dark">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
 
-        {/* =========================================================
-            PAGE HEADER
-        ========================================================== */}
+        {/* PAGE HEADER */}
         <div className="mb-8">
           <Link
             to="/outpasses"
@@ -127,7 +133,6 @@ export default function CreateOutpass() {
               </p>
             </div>
 
-            {/* Secure application badge */}
             <div className="inline-flex self-start lg:self-auto items-center gap-2 px-4 py-2.5 rounded-xl border border-[#6B4A35] bg-[#3A2A20] text-[11px] font-bold uppercase tracking-wide text-[#F0DFC6]">
               <ShieldCheck className="w-4 h-4 text-[#C9A66B]" />
               <span>Secure Application</span>
@@ -135,9 +140,7 @@ export default function CreateOutpass() {
           </div>
         </div>
 
-        {/* =========================================================
-            SAFETY POLICY
-        ========================================================== */}
+        {/* SAFETY POLICY */}
         <div className="mb-7 rounded-2xl border border-[#6B4A35] bg-[#3A2A20] p-4 sm:p-5">
           <div className="flex items-start gap-3.5">
             <div className="w-10 h-10 shrink-0 rounded-xl bg-[#6B4A35]/40 border border-[#6B4A35] flex items-center justify-center">
@@ -158,14 +161,11 @@ export default function CreateOutpass() {
           </div>
         </div>
 
-        {/* =========================================================
-            APPLICATION CARD
-        ========================================================== */}
+        {/* APPLICATION CARD */}
         <form
           onSubmit={handleSubmit}
           className="rounded-3xl overflow-hidden border border-[#6B4A35] bg-[#3A2A20] shadow-card-soft"
         >
-          {/* Application header */}
           <div className="px-5 sm:px-7 py-5 border-b border-[#6B4A35] bg-[#3A2A20]">
             <div className="flex items-center justify-between gap-4">
               <div>
@@ -184,7 +184,6 @@ export default function CreateOutpass() {
             </div>
           </div>
 
-          {/* Error */}
           {errors.non_field_errors && (
             <div className="mx-5 sm:mx-7 mt-5 p-3.5 rounded-xl bg-rose-950/50 border border-rose-800/60 text-rose-200 text-xs flex items-center gap-2.5">
               <AlertCircle className="w-4 h-4 shrink-0" />
@@ -192,9 +191,7 @@ export default function CreateOutpass() {
             </div>
           )}
 
-          {/* =======================================================
-              TRAVEL ITINERARY
-          ======================================================== */}
+          {/* TRAVEL ITINERARY */}
           <section className="px-5 sm:px-7 py-7 border-b border-[#6B4A35]">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-9 h-9 rounded-xl bg-[#6B4A35]/40 border border-[#6B4A35] flex items-center justify-center">
@@ -213,8 +210,6 @@ export default function CreateOutpass() {
             </div>
 
             <div className="space-y-5">
-
-              {/* Destination */}
               <div>
                 <label className="block text-xs font-bold text-[#F0DFC6] mb-2">
                   Destination City / Address *
@@ -241,7 +236,6 @@ export default function CreateOutpass() {
                 )}
               </div>
 
-              {/* Reason */}
               <div>
                 <label className="block text-xs font-bold text-[#F0DFC6] mb-2">
                   Purpose / Reason for Travel *
@@ -264,24 +258,24 @@ export default function CreateOutpass() {
                 )}
               </div>
 
-              {/* Dates */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-                {/* Departure */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
-                    <Calendar className="w-3.5 h-3.5 text-[#C9A66B]" />
+                  <label className="block text-xs font-bold text-[#F0DFC6] mb-2">
                     Departure Date & Time *
                   </label>
 
-                  <input
-                    type="datetime-local"
-                    name="from_date"
-                    value={formData.from_date}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40 [color-scheme:dark]"
-                    required
-                  />
+                  <div className="relative">
+                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A66B] pointer-events-none" />
+
+                    <input
+                      type="datetime-local"
+                      name="from_date"
+                      value={formData.from_date}
+                      onChange={handleChange}
+                      className="w-full pl-11 pr-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
+                      required
+                    />
+                  </div>
 
                   {errors.from_date && (
                     <p className="text-xs text-rose-300 mt-1.5">
@@ -290,21 +284,23 @@ export default function CreateOutpass() {
                   )}
                 </div>
 
-                {/* Return */}
                 <div>
-                  <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
-                    <Clock3 className="w-3.5 h-3.5 text-[#C9A66B]" />
+                  <label className="block text-xs font-bold text-[#F0DFC6] mb-2">
                     Expected Return Date & Time *
                   </label>
 
-                  <input
-                    type="datetime-local"
-                    name="to_date"
-                    value={formData.to_date}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40 [color-scheme:dark]"
-                    required
-                  />
+                  <div className="relative">
+                    <Clock3 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A66B] pointer-events-none" />
+
+                    <input
+                      type="datetime-local"
+                      name="to_date"
+                      value={formData.to_date}
+                      onChange={handleChange}
+                      className="w-full pl-11 pr-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
+                      required
+                    />
+                  </div>
 
                   {errors.to_date && (
                     <p className="text-xs text-rose-300 mt-1.5">
@@ -312,97 +308,91 @@ export default function CreateOutpass() {
                     </p>
                   )}
                 </div>
-
               </div>
             </div>
           </section>
 
-          {/* =======================================================
-              GUARDIAN DETAILS
-          ======================================================== */}
+          {/* CONTACT INFORMATION */}
           <section className="px-5 sm:px-7 py-7 border-b border-[#6B4A35]">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-9 h-9 rounded-xl bg-[#6B4A35]/40 border border-[#6B4A35] flex items-center justify-center">
-                <ShieldCheck className="w-4 h-4 text-[#F0DFC6]" />
+                <Phone className="w-4 h-4 text-[#F0DFC6]" />
               </div>
 
               <div>
                 <h3 className="text-sm font-bold text-[#F4EFE5]">
-                  Guardian & Verification Details
+                  Contact Information
                 </h3>
 
                 <p className="text-[11px] text-[#C9BDB3] mt-0.5">
-                  Contact details used for verification.
+                  Parent details are taken from your registered profile.
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-              {/* Parent name */}
+            <div className="space-y-5">
+              {/* Parent Name */}
               <div>
-                <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
-                  <User className="w-3.5 h-3.5 text-[#C9A66B]" />
-                  Parent / Guardian Name *
+                <label className="block text-xs font-bold text-[#F0DFC6] mb-2">
+                  Parent / Guardian Name
                 </label>
 
-                <input
-                  type="text"
-                  name="parent_name"
-                  value={formData.parent_name}
-                  onChange={handleChange}
-                  placeholder="Full name of guardian"
-                  className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
-                  required
-                />
+                <div className="relative">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A66B] pointer-events-none" />
 
-                {errors.parent_name && (
-                  <p className="text-xs text-rose-300 mt-1.5">
-                    {errors.parent_name[0]}
-                  </p>
-                )}
+                  <input
+                    type="text"
+                    name="parent_name"
+                    value={formData.parent_name}
+                    readOnly
+                    className="w-full pl-11 pr-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16]/70 text-[#C9BDB3] outline-none cursor-not-allowed"
+                  />
+                </div>
               </div>
 
-              {/* Parent contact */}
+              {/* Parent Contact */}
               <div>
-                <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
-                  <Phone className="w-3.5 h-3.5 text-[#C9A66B]" />
-                  Parent Contact Number *
+                <label className="block text-xs font-bold text-[#F0DFC6] mb-2">
+                  Parent / Guardian Phone
                 </label>
 
-                <input
-                  type="text"
-                  name="parent_contact"
-                  value={formData.parent_contact}
-                  onChange={handleChange}
-                  placeholder="+91 94488 77665"
-                  className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
-                  required
-                />
+                <div className="relative">
+                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A66B] pointer-events-none" />
 
-                {errors.parent_contact && (
-                  <p className="text-xs text-rose-300 mt-1.5">
-                    {errors.parent_contact[0]}
-                  </p>
-                )}
+                  <input
+                    type="text"
+                    name="parent_contact"
+                    value={formData.parent_contact}
+                    readOnly
+                    className="w-full pl-11 pr-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16]/70 text-[#C9BDB3] outline-none cursor-not-allowed"
+                  />
+                </div>
+
+                <p className="text-[11px] text-[#A58F79] mt-1.5">
+                  This number is taken automatically from your registered
+                  guardian details.
+                </p>
               </div>
 
-              {/* Emergency contact */}
-              <div className="md:col-span-2">
-                <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
-                  <Phone className="w-3.5 h-3.5 text-[#C9A66B]" />
-                  Student Emergency Contact Number *
+              {/* Emergency Contact */}
+              <div>
+                <label className="block text-xs font-bold text-[#F0DFC6] mb-2">
+                  Emergency Contact Number *
                 </label>
 
-                <input
-                  type="text"
-                  name="emergency_contact"
-                  value={formData.emergency_contact}
-                  onChange={handleChange}
-                  placeholder="Active student phone number while traveling"
-                  className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
-                  required
-                />
+                <div className="relative">
+                  <PhoneCall className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C9A66B] pointer-events-none" />
+
+                  <input
+                    type="tel"
+                    name="emergency_contact"
+                    value={formData.emergency_contact}
+                    onChange={handleChange}
+                    placeholder="Enter emergency contact number"
+                    className="w-full pl-11 pr-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
+                    required
+                  />
+                </div>
 
                 {errors.emergency_contact && (
                   <p className="text-xs text-rose-300 mt-1.5">
@@ -410,73 +400,52 @@ export default function CreateOutpass() {
                   </p>
                 )}
               </div>
-
             </div>
           </section>
 
-          {/* =======================================================
-              ADDITIONAL NOTES
-          ======================================================== */}
+          {/* NOTES */}
           <section className="px-5 sm:px-7 py-7">
-            <label className="flex items-center gap-1.5 text-xs font-bold text-[#F0DFC6] mb-2">
-              <FileText className="w-3.5 h-3.5 text-[#C9A66B]" />
-              Additional Travel Notes
-
-              <span className="font-medium text-[#C9BDB3]">
-                (Optional)
-              </span>
+            <label className="block text-xs font-bold text-[#F0DFC6] mb-2">
+              Additional Notes
             </label>
 
-            <input
-              type="text"
+            <textarea
+              rows={4}
               name="notes"
               value={formData.notes}
               onChange={handleChange}
-              placeholder="e.g. Traveling via KSRTC bus, Ticket PNR #1029482, Accompanied by roommate"
-              className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40"
+              placeholder="Any additional information for the warden..."
+              className="w-full px-4 py-3.5 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F4EFE5] placeholder:text-[#A58F79] outline-none transition-all resize-none focus:border-[#C9A66B] focus:ring-2 focus:ring-[#6B4A35]/40 leading-relaxed"
             />
+
+            {errors.notes && (
+              <p className="text-xs text-rose-300 mt-1.5">
+                {errors.notes[0]}
+              </p>
+            )}
           </section>
 
-          {/* =======================================================
-              SUBMIT AREA
-          ======================================================== */}
-          <div className="px-5 sm:px-7 py-5 bg-[#3A2A20] border-t border-[#6B4A35]">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* SUBMIT */}
+          <div className="px-5 sm:px-7 py-5 border-t border-[#6B4A35] bg-[#241B16] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 text-[#C9A66B] shrink-0 mt-0.5" />
 
-              <div className="flex items-center gap-2 text-[11px] text-[#C9BDB3]">
-                <ShieldCheck className="w-4 h-4 text-[#C9A66B]" />
-                <span>
-                  Your request will be sent for guardian verification.
-                </span>
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full sm:w-auto min-w-[250px] py-3.5 px-6 rounded-xl bg-brand-gold hover:bg-brand-gold-hover text-brand-dark font-bold text-sm shadow-gold-glow transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                {loading ? (
-                  <div className="w-4 h-4 border-2 border-brand-dark border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    <span>Submit for Verification</span>
-                  </>
-                )}
-              </button>
-
+              <p className="text-[11px] leading-relaxed text-[#A58F79] max-w-xl">
+                Please ensure all travel and emergency contact information is
+                accurate before submitting.
+              </p>
             </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#C9A66B] hover:bg-[#D6B87D] text-[#2B211B] text-xs font-bold transition-colors disabled:opacity-60 disabled:cursor-not-allowed shrink-0"
+            >
+              <Send className="w-4 h-4" />
+              {loading ? 'Submitting...' : 'Submit Outpass'}
+            </button>
           </div>
         </form>
-
-        {/* =========================================================
-            BOTTOM HELPER
-        ========================================================== */}
-        <div className="flex items-center justify-center gap-2 mt-5 text-[10px] uppercase tracking-wider text-[#6F5A4A]">
-          <ShieldCheck className="w-3.5 h-3.5" />
-          <span>Student HelpDesk • Secure Campus Request</span>
-        </div>
-
       </div>
     </div>
   );
