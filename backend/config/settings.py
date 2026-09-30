@@ -18,9 +18,13 @@ SECRET_KEY = os.environ.get(
     'django-insecure-shd-campus-helpdesk-key-2026-teal-gold'
 )
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'student-helpdesk-lg6s.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # ---------------------------------------------------------
@@ -180,11 +184,12 @@ REST_FRAMEWORK = {
 # CORS Configuration
 # ---------------------------------------------------------
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = False
 
 CORS_ALLOWED_ORIGINS = [
+    'https://student-helpdesk-lime.vercel.app',
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'http://localhost:3000',

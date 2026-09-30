@@ -205,7 +205,7 @@ export default function Register() {
                   name="username"
                   value={formData.username}
                   onChange={handleChange}
-                  placeholder="e.g. harshitha"
+                  placeholder="e.g. john"
                   className="w-full px-3.5 py-2 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F7F1E8] placeholder-[#A58F79] focus:ring-2 focus:ring-[#C9A66B] outline-none transition-all"
                   required
                 />
@@ -257,7 +257,7 @@ export default function Register() {
                   name="first_name"
                   value={formData.first_name}
                   onChange={handleChange}
-                  placeholder="Harshitha"
+                  placeholder="john"
                   className="w-full px-3.5 py-2 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F7F1E8] placeholder-[#A58F79] focus:ring-2 focus:ring-[#C9A66B] outline-none transition-all"
                   required
                 />
@@ -275,7 +275,7 @@ export default function Register() {
                   name="last_name"
                   value={formData.last_name}
                   onChange={handleChange}
-                  placeholder="Rao"
+                  placeholder="david"
                   className="w-full px-3.5 py-2 text-sm rounded-xl border border-[#6B4A35] bg-[#241B16] text-[#F7F1E8] placeholder-[#A58F79] focus:ring-2 focus:ring-[#C9A66B] outline-none transition-all"
                 />
               </div>
