@@ -10,7 +10,9 @@ from .serializers import (
     LoginSerializer,
     UserSerializer,
     UserProfileUpdateSerializer,
-    ChangePasswordSerializer
+    ChangePasswordSerializer,
+    WardenCreateSerializer,
+    AdminStudentCreateSerializer,
 )
 from .permissions import IsAdminUserRole, IsWarden
 from django.contrib.auth.tokens import default_token_generator
@@ -263,3 +265,72 @@ class UserToggleActiveView(APIView):
             'is_active': target_user.is_active,
             'message': f"User account {'activated' if target_user.is_active else 'deactivated'}."
         })
+
+
+class AdminWardenListCreateView(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsAdminUserRole
+    ]
+
+    def get(self, request):
+        wardens = User.objects.filter(
+            role='WARDEN'
+        ).order_by('-date_joined')
+
+        serializer = UserSerializer(
+            wardens,
+            many=True
+        )
+
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = WardenCreateSerializer(
+            data=request.data
+        )
+
+        if serializer.is_valid():
+            user = serializer.save()
+
+            return Response(
+                {
+                    'user': UserSerializer(user).data,
+                    'message': 'Warden account created successfully.'
+                },
+                status=status.HTTP_201_CREATED
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+class AdminStudentCreateView(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsAdminUserRole
+    ]
+
+    def post(self, request):
+
+        serializer = AdminStudentCreateSerializer(
+            data=request.data
+        )
+
+        if serializer.is_valid():
+
+            user = serializer.save()
+
+            return Response(
+                {
+                    'user': UserSerializer(user).data,
+                    'message': 'Student account created successfully.'
+                },
+                status=status.HTTP_201_CREATED
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )

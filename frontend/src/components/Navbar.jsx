@@ -24,6 +24,7 @@ import {
   ChevronDown,
   LayoutDashboard,
   ClipboardList,
+  ShieldCheck,
 } from 'lucide-react';
 
 import BrandLogo from './BrandLogo';
@@ -176,6 +177,7 @@ export default function Navbar() {
             ['Students', '/admin/students', Users],
             ['Reports', '/admin/reports', BarChart3],
             ['Broadcast', '/admin/broadcast', Send],
+            ['Wardens', '/admin/wardens', ShieldCheck],
           ]
         : [];
 

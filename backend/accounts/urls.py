@@ -10,6 +10,8 @@ from .views import (
     ResetPasswordView,
     StudentListView,
     UserToggleActiveView,
+    AdminWardenListCreateView,
+    AdminStudentCreateView,
 )
 
 urlpatterns = [
@@ -24,6 +26,19 @@ urlpatterns = [
     path('reset-password/', ResetPasswordView.as_view(), name='reset_password'),
 
     path('students/', StudentListView.as_view(), name='students_list'),
+
+    path(
+        'students/create/',
+        AdminStudentCreateView.as_view(),
+        name='admin_student_create'
+    ),
+    
+    path(
+        'wardens/',
+        AdminWardenListCreateView.as_view(),
+        name='admin_wardens'
+    ),
+
     path(
         'users/<int:pk>/toggle-active/',
         UserToggleActiveView.as_view(),

@@ -276,3 +276,179 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
             profile.save()
 
         return instance
+
+
+class WardenCreateSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        write_only=True,
+        min_length=6
+    )
+
+    confirm_password = serializers.CharField(
+        write_only=True,
+        min_length=6
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'phone',
+            'password',
+            'confirm_password',
+        ]
+
+    def validate(self, data):
+        if data['password'] != data['confirm_password']:
+            raise serializers.ValidationError({
+                'confirm_password': 'Passwords do not match.'
+            })
+
+        return data
+
+    def create(self, validated_data):
+        validated_data.pop('confirm_password')
+
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email', ''),
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', ''),
+            phone=validated_data.get('phone', ''),
+            password=validated_data['password'],
+            role='WARDEN'
+        )
+
+        return user
+    
+
+
+class AdminStudentCreateSerializer(serializers.ModelSerializer):
+
+    password = serializers.CharField(
+        write_only=True,
+        min_length=6
+    )
+
+    confirm_password = serializers.CharField(
+        write_only=True,
+        min_length=6
+    )
+
+    roll_number = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        default=''
+    )
+
+    department = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        default=''
+    )
+
+    hostel = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        default=''
+    )
+
+    room_number = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        default=''
+    )
+
+    guardian_name = serializers.CharField(
+        required=True
+    )
+
+    guardian_phone = serializers.CharField(
+        required=True
+    )
+
+    class Meta:
+        model = User
+
+        fields = [
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'phone',
+            'password',
+            'confirm_password',
+            'roll_number',
+            'department',
+            'hostel',
+            'room_number',
+            'guardian_name',
+            'guardian_phone',
+        ]
+
+    def validate(self, data):
+
+        if data['password'] != data['confirm_password']:
+            raise serializers.ValidationError({
+                'confirm_password': 'Passwords do not match.'
+            })
+
+        return data
+
+    def create(self, validated_data):
+
+        validated_data.pop('confirm_password')
+
+        roll_number = validated_data.pop(
+            'roll_number',
+            ''
+        )
+
+        department = validated_data.pop(
+            'department',
+            ''
+        )
+
+        hostel = validated_data.pop(
+            'hostel',
+            ''
+        )
+
+        room_number = validated_data.pop(
+            'room_number',
+            ''
+        )
+
+        guardian_name = validated_data.pop(
+            'guardian_name'
+        )
+
+        guardian_phone = validated_data.pop(
+            'guardian_phone'
+        )
+
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email', ''),
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', ''),
+            phone=validated_data.get('phone', ''),
+            password=validated_data['password'],
+            role='STUDENT'
+        )
+
+        StudentProfile.objects.create(
+            user=user,
+            roll_number=roll_number,
+            department=department,
+            hostel=hostel,
+            room_number=room_number,
+            phone=user.phone,
+            guardian_name=guardian_name,
+            guardian_phone=guardian_phone
+        )
+
+        return user

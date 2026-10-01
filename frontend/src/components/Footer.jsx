@@ -30,7 +30,7 @@ export default function Footer() {
               <li><Link to="/outpasses" className="hover:text-brand-biscuit transition-colors">Outpass System</Link></li>
               <li><Link to="/warden" className="hover:text-brand-biscuit transition-colors">Warden Verification</Link></li>
               <li><Link to="/admin" className="hover:text-brand-biscuit transition-colors">Campus Control Center</Link></li>
-              <li><a href="https://student-helpdesk-lg6s.onrender.com/admin/" target="_blank" rel="noreferrer" className="hover:text-brand-biscuit transition-colors">Django Admin Panel ↗</a></li>
+              <li><a  href="https://student-helpdesk-lg6s.onrender.com/admin/" target="_blank" rel="noreferrer" className="hover:text-brand-biscuit transition-colors">Django Admin Panel ↗</a></li>
             </ul>
           </div>
 

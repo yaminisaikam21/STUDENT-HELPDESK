@@ -41,6 +41,7 @@ import AdminOutpasses from './pages/admin/Outpasses';
 import AdminStudents from './pages/admin/Students';
 import Reports from './pages/admin/Reports';
 import Broadcast from './pages/admin/Broadcast';
+import AdminWardens from './pages/admin/Wardens';
 
 import ResetPassword from './pages/ResetPassword';
 
@@ -436,6 +437,17 @@ export default function App() {
         }
       />
 
+
+      <Route
+        path="/admin/wardens"
+        element={
+          <ProtectedLayout
+            allowedRoles={['ADMIN']}
+          >
+            <AdminWardens />
+          </ProtectedLayout>
+        }
+      />
 
       <Route
         path="/admin/reports"

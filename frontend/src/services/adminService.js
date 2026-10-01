@@ -18,8 +18,32 @@ export const adminService = {
     return response.data;
   },
 
+  createStudent: async (studentData) => {
+    const response = await api.post(
+      '/api/auth/students/create/',
+      studentData
+    );
+
+    return response.data;
+  },
+
+  getWardens: async () => {
+    const response = await api.get('/api/auth/wardens/');
+    return response.data;
+  },
+
+  createWarden: async (wardenData) => {
+    const response = await api.post(
+      '/api/auth/wardens/',
+      wardenData
+    );
+    return response.data;
+  },
+
   toggleUserActive: async (userId) => {
-    const response = await api.post(`/api/auth/users/${userId}/toggle-active/`);
+    const response = await api.post(
+      `/api/auth/users/${userId}/toggle-active/`
+    );
     return response.data;
   },
 };
