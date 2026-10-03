@@ -19,7 +19,6 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.conf import settings
-import resend
 
 class RegisterView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -115,54 +114,23 @@ class ForgotPasswordView(APIView):
             is_active=True
         ).first()
 
-        # Do not reveal whether an account exists.
-        if user:
-            uid = urlsafe_base64_encode(
-                force_bytes(user.pk)
-            )
-
-            token = default_token_generator.make_token(user)
-
-            reset_link = (
-                f"{settings.FRONTEND_URL}"
-                f"/reset-password/{uid}/{token}"
-            )
-
-            message = f"""
-Hello {user.first_name or user.username},
-
-We received a request to reset your Student HelpDesk password.
-
-Click the link below to create a new password:
-
-{reset_link}
-
-This link is valid until the password is changed.
-
-If you did not request this password reset, you can safely ignore this email.
-
-Regards,
-Student HelpDesk
-"""
-
-        resend.api_key = settings.RESEND_API_KEY
-        try:
-            resend.Emails.send({
-                "from": settings.DEFAULT_FROM_EMAIL,
-                "to": [email],
-                "subject": "Student HelpDesk - Password Reset",
-                "text": message,
-            })
-        except Exception as e:
-            print("Resend email error:", e)
+        if not user:
             return Response(
-                {'detail': 'Unable to send password reset email. Please try again later.'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                {'detail': 'This email is not registered.'},
+                status=status.HTTP_404_NOT_FOUND
             )
+
+        uid = urlsafe_base64_encode(
+            force_bytes(user.pk)
+        )
+
+        token = default_token_generator.make_token(user)
 
         return Response(
             {
-                'message': 'If an account exists with this email, a password reset link has been sent.'
+                'message': 'Email verified successfully.',
+                'uid': uid,
+                'token': token
             },
             status=status.HTTP_200_OK
         )

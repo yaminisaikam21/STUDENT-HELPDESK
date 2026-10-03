@@ -5,7 +5,6 @@ Django settings for Student HelpDesk project.
 from pathlib import Path
 import os
 import dj_database_url
-
 from dotenv import load_dotenv
 
 
@@ -13,6 +12,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / '.env')
 
+
+# ---------------------------------------------------------
+# Security
+# ---------------------------------------------------------
 
 SECRET_KEY = os.environ.get(
     'DJANGO_SECRET_KEY',
@@ -72,7 +75,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
-
 # ---------------------------------------------------------
 # Templates
 # ---------------------------------------------------------
@@ -95,7 +97,6 @@ TEMPLATES = [
 
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
 ASGI_APPLICATION = 'config.asgi.application'
 
 
@@ -108,6 +109,7 @@ DATABASES = {
         default=os.environ.get('DATABASE_URL')
     )
 }
+
 
 # ---------------------------------------------------------
 # Custom User Model
@@ -139,7 +141,6 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -173,7 +174,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': (
+        'rest_framework.pagination.PageNumberPagination'
+    ),
 
     'PAGE_SIZE': 50,
 }
@@ -198,23 +201,9 @@ CORS_ALLOWED_ORIGINS = [
 
 # ---------------------------------------------------------
 # Frontend URL
-# Used for password reset links
 # ---------------------------------------------------------
 
 FRONTEND_URL = os.environ.get(
     'FRONTEND_URL',
     'http://localhost:5173'
-)
-
-
-# ---------------------------------------------------------
-# Gmail SMTP Email Configuration
-# ---------------------------------------------------------
-# Resend Email Configuration
-
-RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
-
-DEFAULT_FROM_EMAIL = os.environ.get(
-    'DEFAULT_FROM_EMAIL',
-    'onboarding@resend.dev'
 )
