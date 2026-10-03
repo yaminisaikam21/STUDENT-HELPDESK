@@ -207,3 +207,7 @@ FRONTEND_URL = os.environ.get(
     'FRONTEND_URL',
     'http://localhost:5173'
 )
+
+
+BREVO_API_KEY = os.environ.get('BREVO_API_KEY')
+BREVO_SENDER_EMAIL = os.environ.get('BREVO_SENDER_EMAIL')
