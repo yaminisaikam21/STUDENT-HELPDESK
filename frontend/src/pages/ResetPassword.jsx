@@ -20,8 +20,7 @@ export default function ResetPassword() {
   const navigate = useNavigate();
 
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] =
-    useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -32,6 +31,11 @@ export default function ResetPassword() {
 
     setError('');
     setSuccess('');
+
+    if (!uid || !token) {
+      setError('This password reset link is invalid.');
+      return;
+    }
 
     if (!password || !confirmPassword) {
       setError('Please enter both password fields.');
@@ -44,9 +48,7 @@ export default function ResetPassword() {
     }
 
     if (password.length < 6) {
-      setError(
-        'Password must be at least 6 characters.'
-      );
+      setError('Password must be at least 6 characters.');
       return;
     }
 
@@ -77,6 +79,7 @@ export default function ResetPassword() {
         'This password reset link is invalid or expired.';
 
       setError(message);
+
     } finally {
       setLoading(false);
     }
@@ -101,7 +104,11 @@ export default function ResetPassword() {
         <div className="rounded-3xl border border-[#6B4A35] bg-[#3A2A20] p-7 sm:p-8 shadow-2xl">
 
           <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#4A3426] text-[#C9A66B]">
-            <Lock className="w-6 h-6" />
+            {success ? (
+              <CheckCircle2 className="w-6 h-6" />
+            ) : (
+              <Lock className="w-6 h-6" />
+            )}
           </div>
 
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#C9A66B]">
@@ -113,8 +120,7 @@ export default function ResetPassword() {
           </h1>
 
           <p className="mt-2 text-sm leading-6 text-[#B89B7A]">
-            Choose a new password for your Student HelpDesk
-            account.
+            Choose a new password for your Student HelpDesk account.
           </p>
 
           {error && (
@@ -131,63 +137,70 @@ export default function ResetPassword() {
             </div>
           )}
 
-          <form
-            onSubmit={handleSubmit}
-            className="mt-6 space-y-5"
-          >
-            <div>
-              <label className="mb-1.5 block text-xs font-semibold text-[#E7D8C5]">
-                New Password
-              </label>
-
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setError('');
-                }}
-                placeholder="Enter new password"
-                autoComplete="new-password"
-                disabled={loading}
-                required
-                className="w-full rounded-xl border border-[#6B4A35] bg-[#241B16] px-4 py-3 text-sm text-[#F7F1E8] placeholder-[#A58F79] outline-none focus:ring-2 focus:ring-[#C9A66B] focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label className="mb-1.5 block text-xs font-semibold text-[#E7D8C5]">
-                Confirm New Password
-              </label>
-
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                  setError('');
-                }}
-                placeholder="Confirm new password"
-                autoComplete="new-password"
-                disabled={loading}
-                required
-                className="w-full rounded-xl border border-[#6B4A35] bg-[#241B16] px-4 py-3 text-sm text-[#F7F1E8] placeholder-[#A58F79] outline-none focus:ring-2 focus:ring-[#C9A66B] focus:border-transparent"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading || !!success}
-              className="w-full rounded-xl bg-[#C9A66B] px-4 py-3 text-sm font-bold text-[#2B211B] hover:bg-[#B58A4A] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          {!success && (
+            <form
+              onSubmit={handleSubmit}
+              className="mt-6 space-y-5"
             >
-              {loading
-                ? 'Resetting Password...'
-                : 'Reset Password'}
-            </button>
-          </form>
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-[#E7D8C5]">
+                  New Password
+                </label>
+
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setError('');
+                  }}
+                  placeholder="Enter new password"
+                  autoComplete="new-password"
+                  disabled={loading}
+                  required
+                  className="w-full rounded-xl border border-[#6B4A35] bg-[#241B16] px-4 py-3 text-sm text-[#F7F1E8] placeholder-[#A58F79] outline-none focus:ring-2 focus:ring-[#C9A66B] focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-[#E7D8C5]">
+                  Confirm New Password
+                </label>
+
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    setError('');
+                  }}
+                  placeholder="Confirm new password"
+                  autoComplete="new-password"
+                  disabled={loading}
+                  required
+                  className="w-full rounded-xl border border-[#6B4A35] bg-[#241B16] px-4 py-3 text-sm text-[#F7F1E8] placeholder-[#A58F79] outline-none focus:ring-2 focus:ring-[#C9A66B] focus:border-transparent"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full rounded-xl bg-[#C9A66B] px-4 py-3 text-sm font-bold text-[#2B211B] hover:bg-[#B58A4A] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Resetting Password...' : 'Reset Password'}
+              </button>
+            </form>
+          )}
+
+          {success && (
+            <p className="mt-4 text-center text-xs text-[#B89B7A]">
+              Redirecting you to the login page...
+            </p>
+          )}
 
         </div>
       </div>
     </div>
   );
 }
+      
