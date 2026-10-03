@@ -16,10 +16,10 @@ from .serializers import (
 )
 from .permissions import IsAdminUserRole, IsWarden
 from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.conf import settings
+import resend
 
 class RegisterView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -145,12 +145,19 @@ Regards,
 Student HelpDesk
 """
 
-            send_mail(
-                subject='Student HelpDesk - Password Reset',
-                message=message,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
+        resend.api_key = settings.RESEND_API_KEY
+        try:
+            resend.Emails.send({
+                "from": settings.DEFAULT_FROM_EMAIL,
+                "to": [email],
+                "subject": "Student HelpDesk - Password Reset",
+                "text": message,
+            })
+        except Exception as e:
+            print("Resend email error:", e)
+            return Response(
+                {'detail': 'Unable to send password reset email. Please try again later.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
         return Response(
