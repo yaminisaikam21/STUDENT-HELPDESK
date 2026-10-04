@@ -9,6 +9,8 @@ import {
   Mail,
   Phone,
   User,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 import { adminService } from '../../services/adminService';
@@ -21,6 +23,8 @@ const Wardens = () => {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -707,53 +711,79 @@ const Wardens = () => {
 
                   {/* PASSWORDS */}
 
-                  <div className="grid grid-cols-2 gap-x-4">
+                <div className="grid grid-cols-2 gap-x-4">
 
-                    <div>
+                  <div className="relative">
 
-                      <label className="block text-xs font-semibold text-brand-dark mb-1.5">
-                        Password{' '}
-                        <span className="text-red-500">
-                          *
-                        </span>
-                      </label>
+                    <label className="block text-xs font-semibold text-brand-dark mb-1.5">
+                      Password{' '}
+                      <span className="text-red-500">
+                        *
+                      </span>
+                    </label>
 
-                      <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                        minLength={6}
-                        placeholder="Minimum 6 characters"
-                        className={inputClass}
-                      />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                      minLength={6}
+                      placeholder="Minimum 6 characters"
+                      className={`${inputClass} pr-11`}
+                    />
 
-                    </div>
-
-                    <div>
-
-                      <label className="block text-xs font-semibold text-brand-dark mb-1.5">
-                        Confirm Password{' '}
-                        <span className="text-red-500">
-                          *
-                        </span>
-                      </label>
-
-                      <input
-                        type="password"
-                        name="confirm_password"
-                        value={formData.confirm_password}
-                        onChange={handleChange}
-                        required
-                        minLength={6}
-                        placeholder="Re-enter password"
-                        className={inputClass}
-                      />
-
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-brand-muted hover:text-brand-brown transition-colors"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
 
                   </div>
+
+                  <div className="relative">
+
+                    <label className="block text-xs font-semibold text-brand-dark mb-1.5">
+                      Confirm Password{' '}
+                      <span className="text-red-500">
+                        *
+                      </span>
+                    </label>
+
+                    <input
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      name="confirm_password"
+                      value={formData.confirm_password}
+                      onChange={handleChange}
+                      required
+                      minLength={6}
+                      placeholder="Re-enter password"
+                      className={`${inputClass} pr-11`}
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-brand-muted hover:text-brand-brown transition-colors"
+                      aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+
+                  </div>
+
+                </div>
 
                 </div>
 
