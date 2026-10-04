@@ -5,7 +5,9 @@ import {
   Users,
   Power,
   Plus,
-  X
+  X,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 import { adminService } from '../../services/adminService';
@@ -29,6 +31,10 @@ export default function AdminStudents() {
   const [showAddModal, setShowAddModal] = useState(false);
 
   const [saving, setSaving] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -682,27 +688,61 @@ export default function AdminStudents() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Password"
-                    required
-                    minLength={6}
-                    className="w-full px-3 py-2 rounded-xl border border-brand-border text-sm outline-none focus:ring-2 focus:ring-brand-brown"
-                  />
+                  <div className="relative">
 
-                  <input
-                    type="password"
-                    name="confirm_password"
-                    value={formData.confirm_password}
-                    onChange={handleChange}
-                    placeholder="Confirm Password"
-                    required
-                    minLength={6}
-                    className="w-full px-3 py-2 rounded-xl border border-brand-border text-sm outline-none focus:ring-2 focus:ring-brand-brown"
-                  />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Password"
+                      required
+                      minLength={6}
+                      className="w-full px-3 py-2 pr-11 rounded-xl border border-brand-border text-sm outline-none focus:ring-2 focus:ring-brand-brown"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-brand-muted hover:text-brand-brown transition-colors"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+
+                  </div>
+
+                  <div className="relative">
+
+                    <input
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      name="confirm_password"
+                      value={formData.confirm_password}
+                      onChange={handleChange}
+                      placeholder="Confirm Password"
+                      required
+                      minLength={6}
+                      className="w-full px-3 py-2 pr-11 rounded-xl border border-brand-border text-sm outline-none focus:ring-2 focus:ring-brand-brown"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-brand-muted hover:text-brand-brown transition-colors"
+                      aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+
+                  </div>
 
                 </div>
 
