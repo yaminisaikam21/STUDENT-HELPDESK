@@ -8,6 +8,8 @@ import {
   ShieldCheck,
   Lock,
   CheckCircle2,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 
 import { authService } from '../../services/authService';
@@ -29,6 +31,10 @@ export default function Settings() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
   // =========================================================
   // NOTIFICATION PREFERENCES
@@ -323,7 +329,7 @@ export default function Settings() {
                   <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
 
                   <input
-                    type="password"
+                    type={showOldPassword ? 'text' : 'password'}
                     value={passwords.old_password}
                     onChange={(e) =>
                       setPasswords((p) => ({
@@ -332,9 +338,22 @@ export default function Settings() {
                       }))
                     }
                     placeholder="Enter your current password"
-                    className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-brand-border bg-slate-50/50 text-slate-800 placeholder:text-slate-400 outline-none transition-all focus:border-brand-brown focus:ring-2 focus:ring-brand-brown/20"
+                    className="w-full pl-10 pr-12 py-3 text-sm rounded-xl border border-brand-border bg-slate-50/50 text-slate-800 placeholder:text-slate-400 outline-none transition-all focus:border-brand-brown focus:ring-2 focus:ring-brand-brown/20"
                     required
                   />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowOldPassword(!showOldPassword)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-brown transition-colors"
+                    aria-label={showOldPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showOldPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
 
                 </div>
 
@@ -355,7 +374,7 @@ export default function Settings() {
                     <KeyRound className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
 
                     <input
-                      type="password"
+                      type={showNewPassword ? 'text' : 'password'}
                       value={passwords.new_password}
                       onChange={(e) =>
                         setPasswords((p) => ({
@@ -364,9 +383,22 @@ export default function Settings() {
                         }))
                       }
                       placeholder="At least 6 characters"
-                      className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-brand-border bg-slate-50/50 text-slate-800 placeholder:text-slate-400 outline-none transition-all focus:border-brand-brown focus:ring-2 focus:ring-brand-brown/20"
+                      className="w-full pl-10 pr-12 py-3 text-sm rounded-xl border border-brand-border bg-slate-50/50 text-slate-800 placeholder:text-slate-400 outline-none transition-all focus:border-brand-brown focus:ring-2 focus:ring-brand-brown/20"
                       required
                     />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-brown transition-colors"
+                      aria-label={showNewPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showNewPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
 
                   </div>
 
@@ -383,7 +415,7 @@ export default function Settings() {
                     <CheckCircle2 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
 
                     <input
-                      type="password"
+                      type={showConfirmNewPassword ? 'text' : 'password'}
                       value={passwords.confirm_new_password}
                       onChange={(e) =>
                         setPasswords((p) => ({
@@ -392,9 +424,28 @@ export default function Settings() {
                         }))
                       }
                       placeholder="Repeat new password"
-                      className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-brand-border bg-slate-50/50 text-slate-800 placeholder:text-slate-400 outline-none transition-all focus:border-brand-brown focus:ring-2 focus:ring-brand-brown/20"
+                      className="w-full pl-10 pr-12 py-3 text-sm rounded-xl border border-brand-border bg-slate-50/50 text-slate-800 placeholder:text-slate-400 outline-none transition-all focus:border-brand-brown focus:ring-2 focus:ring-brand-brown/20"
                       required
                     />
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmNewPassword(!showConfirmNewPassword)
+                      }
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-brown transition-colors"
+                      aria-label={
+                        showConfirmNewPassword
+                          ? 'Hide password'
+                          : 'Show password'
+                      }
+                    >
+                      {showConfirmNewPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
 
                   </div>
 
