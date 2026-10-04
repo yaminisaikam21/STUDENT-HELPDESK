@@ -4,6 +4,7 @@ Django settings for Student HelpDesk project.
 
 from pathlib import Path
 import os
+import cloudinary
 import dj_database_url
 from dotenv import load_dotenv
 
@@ -149,13 +150,19 @@ USE_TZ = True
 # ---------------------------------------------------------
 
 STATIC_URL = 'static/'
-
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
-
 MEDIA_ROOT = BASE_DIR / 'media'
 
+STORAGES = {
+    'default': {
+        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+    },
+}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
