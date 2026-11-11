@@ -182,17 +182,6 @@ class LoginView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data['user']
 
-            if not user.is_email_verified:
-                return Response(
-                    {
-                        "message": (
-                            "Please verify your email address "
-                            "before logging in."
-                        )
-                    },
-                    status=status.HTTP_403_FORBIDDEN
-                )
-
             token, created = Token.objects.get_or_create(user=user)
 
             return Response(
@@ -367,11 +356,6 @@ class ResetPasswordView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        if not user.is_email_verified:
-            return Response(
-                {"message": "Please verify your email before resetting your password."},
-                status=status.HTTP_403_FORBIDDEN
-            )
 
         if new_password != confirm_password:
             return Response(
@@ -414,6 +398,12 @@ class ResetPasswordView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        if not user.is_email_verified:
+            return Response(
+                {"message": "Please verify your email before resetting your password."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
         if not default_token_generator.check_token(
             user,
             token
