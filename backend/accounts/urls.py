@@ -12,6 +12,7 @@ from .views import (
     UserToggleActiveView,
     AdminWardenListCreateView,
     AdminStudentCreateView,
+    VerifyEmailView,
 )
 
 urlpatterns = [
@@ -24,6 +25,7 @@ urlpatterns = [
 
     path('forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
     path('reset-password/', ResetPasswordView.as_view(), name='reset_password'),
+    path('verify-email/', VerifyEmailView.as_view(), name='verify_email'),
 
     path('students/', StudentListView.as_view(), name='students_list'),
 

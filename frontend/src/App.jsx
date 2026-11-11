@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import NotificationDetails from './pages/NotificationDetails';
+import VerifyEmail from './pages/VerifyEmail';
 
 // Student
 import StudentHome from './pages/student/StudentHome';
@@ -257,6 +258,10 @@ export default function App() {
         }
       />
 
+        <Route
+    path="/verify-email/:uid/:token"
+    element={<VerifyEmail />}
+/>
 
       <Route
         path="/settings"

@@ -110,27 +110,13 @@ export const AuthProvider = ({ children }) => {
   /*
    * REGISTER
    */
-  const register = async (userData) => {
+const register = async (userData) => {
+    const data = await authService.register(userData);
 
-    const data =
-      await authService.register(userData);
-
-    setToken(data.token);
-    setUser(data.user);
-
-    localStorage.setItem(
-      'shd_token',
-      data.token
-    );
-
-    localStorage.setItem(
-      'shd_user',
-      JSON.stringify(data.user)
-    );
-
+    // Do not log the user in.
+    // They must verify their email first.
     return data;
-  };
-
+};
 
   /*
    * LOGOUT

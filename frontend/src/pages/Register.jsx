@@ -59,61 +59,75 @@ export default function Register() {
     }
   };
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
 
     if (formData.password !== formData.confirm_password) {
-      setErrors({
-        confirm_password: ['Passwords do not match.'],
-      });
-      return;
+        setErrors({
+            confirm_password: ['Passwords do not match.'],
+        });
+        return;
     }
 
     if (!formData.guardian_name.trim()) {
-      setErrors({
-        guardian_name: ['Parent / Guardian name is required.'],
-      });
-      return;
+        setErrors({
+            guardian_name: ['Parent / Guardian name is required.'],
+        });
+        return;
     }
 
     if (!formData.guardian_phone.trim()) {
-      setErrors({
-        guardian_phone: ['Parent / Guardian phone number is required.'],
-      });
-      return;
+        setErrors({
+            guardian_phone: ['Parent / Guardian phone number is required.'],
+        });
+        return;
     }
 
     try {
-      setLoading(true);
+        setLoading(true);
 
-      await register(formData);
+        const response = await register(formData);
 
-      addToast(
-        'Student account registered successfully! Welcome to HelpDesk.',
-        'success'
-      );
+        addToast(
+            response.message ||
+            'Registration successful! Please verify your email.',
+            'success'
+        );
 
-      navigate('/student', { replace: true });
+        navigate('/login', { replace: true });
+
     } catch (err) {
-      console.error('Registration error:', err);
+        console.error('Registration error:', err);
 
-      if (err.response?.data) {
-        setErrors(err.response.data);
-      } else {
-        setErrors({
-          non_field_errors: ['Network error. Please try again.'],
-        });
-      }
+        const responseData = err.response?.data;
 
-      addToast(
-        'Registration could not be completed. Check the errors.',
-        'error'
-      );
+        if (responseData) {
+            setErrors({
+                ...responseData,
+                non_field_errors: [
+                    responseData.message ||
+                    responseData.detail ||
+                    'Registration could not be completed.'
+                ],
+            });
+        } else {
+            setErrors({
+                non_field_errors: [
+                    'Network error. Please try again.'
+                ],
+            });
+        }
+
+        addToast(
+            'Registration could not be completed. Check the errors.',
+            'error'
+        );
+
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
   return (
     <div className="min-h-[90vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-brand-cream">

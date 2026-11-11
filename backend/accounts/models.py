@@ -10,6 +10,7 @@ class User(AbstractUser):
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='STUDENT')
     phone = models.CharField(max_length=20, blank=True, default='')
+    is_email_verified = models.BooleanField(default=False)
 
     def is_student(self):
         return self.role == 'STUDENT'
